@@ -8,9 +8,13 @@
  * This is a shared client/server module.
  */
 
-import {html} from 'lit';
+import {html, ReactiveControllerHost} from 'lit';
 import {LitElement, css} from 'lit';
 import {property} from 'lit/decorators/property.js';
+
+import {serverUntil} from '@lit-labs/ssr-client/directives/server-until.js';
+import {ServerController} from '@lit-labs/ssr-client/controllers/server-controller.js';
+import {StatusRenderer, Task} from '@lit-labs/task';
 
 export const initialData = {
   name: 'SSR',
@@ -20,6 +24,33 @@ export const initialData = {
   attr: 'attr-value',
   wasUpdated: false,
 };
+
+const asyncContent = (content: unknown, timeout = 500) =>
+  new Promise((r) => {
+    setTimeout(() => {
+      r(content);
+    }, timeout);
+  });
+
+class FetchController extends Task implements ServerController {
+  get serverUpdateComplete() {
+    this.hostUpdated();
+    return this.taskComplete;
+  }
+  constructor(host: ReactiveControllerHost, private url: string) {
+    super(
+      host,
+      async ([url]) => {
+          const response = await fetch(String(url));
+          return await response.json();
+        },
+      () => [this.url]
+    );
+  }
+  override render(renderer: StatusRenderer<unknown>) {
+    return super.render(renderer);
+  }
+}
 
 export class MyElement extends LitElement {
   static override styles = css`
@@ -50,11 +81,28 @@ export class MyElement extends LitElement {
   @property({type: Boolean, reflect: true})
   wasUpdated = false;
 
+  private fetchController = new FetchController(
+    this,
+    'https://gist.githubusercontent.com/kevinpschaaf/c2baac9c299fb8912bedaafa41f0148f/raw/d23e618049da61c9405ea5464f51d07aa13f5f21/response.json'
+  );
+
   override render() {
     return html`
       <header>I'm a my-element!</header>
       <div><i>this.prop</i>: ${this.prop}</div>
+      <section>
+        ${serverUntil(asyncContent('async content', 100), 'loading...')}
+      </section>
       <div><i>this.attr</i>: ${this.attr}</div>
+      ${this.fetchController.render({
+        initial: () => "Initial",
+        pending: () => 'Loading...',
+        complete: (list) =>
+          html`<ul>
+            ${(list as Array<{name:String}>).map((item) => html`<li>${item.name}</li>`)}
+          </ul>`,
+        error: (error: unknown) => `Error loading: ${error}`,
+      })}
     `;
   }
 }

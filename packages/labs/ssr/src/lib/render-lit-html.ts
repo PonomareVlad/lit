@@ -52,6 +52,7 @@ import {
 } from './util/parse5-utils.js';
 
 import {isRenderLightDirective} from '@lit-labs/ssr-client/directives/render-light.js';
+import {isServerUntilDirective} from '@lit-labs/ssr-client/directives/server-until.js';
 import {reflectedAttributeName} from './reflected-attributes.js';
 
 import {LitElementRenderer} from './lit-element-renderer.js';
@@ -573,6 +574,13 @@ function* renderValue(
       yield* instance.renderLight(renderInfo);
     }
     value = null;
+  } else if (isServerUntilDirective(value)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const promise = (value as DirectiveResult).values[0] as PromiseLike<unknown>;
+    const continuation = promise.then((v) => renderValue(v, renderInfo));
+    yield continuation as unknown as string;
+    return;
   } else {
     value = resolveDirective(
       connectedDisconnectable({type: PartType.CHILD}) as ChildPart,

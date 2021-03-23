@@ -21,9 +21,17 @@
       "development": "./development/index.js",
       "default": "./index.js"
     },
+    "./controllers/server-controller.js": {
+      "development": "./development/controllers/server-controller.js",
+      "default": "./controllers/server-controller.js"
+    },
     "./directives/render-light.js": {
       "development": "./development/directives/render-light.js",
       "default": "./directives/render-light.js"
+    },
+    "./directives/server-until.js": {
+      "development": "./development/directives/server-until.js",
+      "default": "./directives/server-until.js"
     }
   },
   "files": [
