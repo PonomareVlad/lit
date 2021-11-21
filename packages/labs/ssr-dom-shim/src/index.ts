@@ -25,6 +25,44 @@ const attributesForElement = (
   return attrs;
 };
 
+/**
+ * Extends EventTarget to have a parent reference and adds event propagation.
+ */
+export class EventTargetWithParent extends EventTarget {
+  __eventTargetParent: EventTarget | undefined;
+
+  override dispatchEvent(event: Event): boolean {
+    // TODO (justinfagnani): This doesn't implement capture at all.
+    // To implement capture we'd need to patch addEventListener to track the
+    // capturing listeners separately, then call into a capture method here
+    // which would supercall before processing any capturing listeners.
+
+    // First dispatch the event on this instance
+    let canceled = super.dispatchEvent(event);
+
+    // Then conditionally bubble up. cancelBubble is true if a handler
+    // on this instance called event.stopPropagation()
+    if (!event.cancelBubble && this.__eventTargetParent !== undefined) {
+      canceled &&= this.__eventTargetParent.dispatchEvent(event);
+    }
+    return canceled;
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class CustomEvent<T = any> extends Event {
+  detail: T;
+
+  constructor(type: string, init?: CustomEventInit<T>) {
+    super(type, init);
+    this.detail = init?.detail as T;
+  }
+}
+
+class Element extends EventTargetWithParent {
+  readonly parentNode: Element | null = null;
+}
+
 // The typings around the exports below are a little funky:
 //
 // 1. We want the `name` of the shim classes to match the real ones at runtime,

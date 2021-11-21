@@ -14,6 +14,7 @@
 
 import fetch from 'node-fetch';
 import {
+  EventTargetWithParent,
   HTMLElement,
   Element,
   CustomElementRegistry,
@@ -55,6 +56,9 @@ export const getWindow = ({
   }
 
   const window = {
+    EventTarget: EventTargetWithParent,
+    Event,
+    CustomEvent,
     Element,
     HTMLElement,
     Document,
