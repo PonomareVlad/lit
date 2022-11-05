@@ -15,7 +15,7 @@ import {renderAppWithInitialData} from './app-server.js';
 const {nodeResolve} = koaNodeResolve;
 
 const moduleUrl = new URL(import.meta.url);
-const packageRoot = path.resolve(moduleUrl.pathname, '../../..');
+const packageRoot = path.resolve(moduleUrl.pathname, '../../../../../..');
 
 const port = 8080;
 
