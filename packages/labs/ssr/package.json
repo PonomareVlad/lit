@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/ssr",
+  "name": "@lit-async/ssr",
   "type": "module",
   "version": "2.2.3",
   "publishConfig": {

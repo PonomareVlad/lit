@@ -1,5 +1,5 @@
 {
-  "name": "@lit/localize",
+  "name": "@lit-async/localize",
   "version": "0.11.4",
   "publishConfig": {
     "access": "public"

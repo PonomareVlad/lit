@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/ssr-client",
+  "name": "@lit-async/ssr-client",
   "version": "1.0.1",
   "description": "Client package for @lit-labs/ssr.",
   "license": "BSD-3-Clause",

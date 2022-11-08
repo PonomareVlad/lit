@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/context",
+  "name": "@lit-async/context",
   "version": "0.1.3",
   "description": "Helpers and controllers for using Context protocol",
   "license": "BSD-3-Clause",

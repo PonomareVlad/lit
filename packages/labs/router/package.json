@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/router",
+  "name": "@lit-async/router",
   "version": "0.1.1",
   "description": "A router for Lit.",
   "license": "BSD-3-Clause",

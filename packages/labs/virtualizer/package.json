@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/virtualizer",
+  "name": "@lit-async/virtualizer",
   "version": "0.7.2",
   "description": "Viewport-based virtualization (virtual scrolling) for Lit",
   "author": "Google LLC",

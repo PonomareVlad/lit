@@ -1,5 +1,5 @@
 {
-  "name": "lit",
+  "name": "@lit-async/lit",
   "version": "2.4.1",
   "publishConfig": {
     "access": "public"

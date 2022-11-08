@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/motion",
+  "name": "@lit-async/motion",
   "version": "1.0.3",
   "description": "Lit directives for making things move.",
   "license": "BSD-3-Clause",
