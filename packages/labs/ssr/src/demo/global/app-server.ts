@@ -25,6 +25,7 @@ export function* renderApp(data: typeof initialData) {
     <!doctype html>
     <html>
       <head>
+        <meta content="dark light" name="color-scheme">
         <!-- This little script loads the client script on a button click. This
              lets us see that only the HTML loads for first render -->
         <script type="module">
