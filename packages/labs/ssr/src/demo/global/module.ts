@@ -41,9 +41,9 @@ class FetchController extends Task implements ServerController {
     super(
       host,
       async ([url]) => {
-          const response = await fetch(String(url));
-          return await response.json();
-        },
+        const response = await fetch(String(url));
+        return await response.json();
+      },
       () => [this.url]
     );
   }
@@ -70,7 +70,7 @@ export class MyElement extends LitElement {
     }
 
     :host([wasUpdated]) {
-      background: lightgreen;
+      background: rgba(0, 128, 0, 0.5);
     }
   `;
 
@@ -91,15 +91,22 @@ export class MyElement extends LitElement {
       <header>I'm a my-element!</header>
       <div><i>this.prop</i>: ${this.prop}</div>
       <section>
-        ${serverUntil(asyncContent('async content', 100), 'loading...')}
+        ${serverUntil(
+          asyncContent(
+            html` <progress value="${Math.random()}">Async content</progress>`,
+            100
+          )
+        )}
       </section>
       <div><i>this.attr</i>: ${this.attr}</div>
       ${this.fetchController.render({
-        initial: () => "Initial",
+        initial: () => 'Initial',
         pending: () => 'Loading...',
         complete: (list) =>
           html`<ul>
-            ${(list as Array<{name:String}>).map((item) => html`<li>${item.name}</li>`)}
+            ${(list as Array<{name: String}>).map(
+              (item) => html`<li>${item.name}</li>`
+            )}
           </ul>`,
         error: (error: unknown) => `Error loading: ${error}`,
       })}

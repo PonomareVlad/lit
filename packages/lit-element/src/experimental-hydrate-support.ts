@@ -85,11 +85,12 @@ globalThis.litElementHydrateSupport = ({
 
   // Hydrate on first update when needed
   const update = Object.getPrototypeOf(LitElement.prototype).update;
-  LitElement.prototype.update = function (
+  LitElement.prototype.update = async function (
     this: PatchableLitElement,
     changedProperties: PropertyValues
   ) {
-    const value = this.render();
+    const value = await withAsync(this.render());
+    console.debug(value);
     // Since this is a patch, we can't call super.update(), so we capture
     // it off the proto chain and call it instead
     update.call(this, changedProperties);
@@ -101,3 +102,18 @@ globalThis.litElementHydrateSupport = ({
     }
   };
 };
+
+// TODO: Prototype
+async function withAsync(value: unknown) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (typeof value == 'object' && Array.isArray(value?.values)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const values = value.values.map(async (value) => withAsync(await value));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    value.values = await Promise.all(values);
+  }
+  return value;
+}
