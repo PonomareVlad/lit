@@ -90,7 +90,6 @@ globalThis.litElementHydrateSupport = ({
     changedProperties: PropertyValues
   ) {
     const value = await withAsync(this.render());
-    console.debug(value);
     // Since this is a patch, we can't call super.update(), so we capture
     // it off the proto chain and call it instead
     update.call(this, changedProperties);
