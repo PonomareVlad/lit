@@ -85,34 +85,42 @@ globalThis.litElementHydrateSupport = ({
 
   // Hydrate on first update when needed
   const update = Object.getPrototypeOf(LitElement.prototype).update;
-  LitElement.prototype.update = async function (
+  LitElement.prototype.update = function(
     this: PatchableLitElement,
     changedProperties: PropertyValues
   ) {
-    const value = await withAsync(this.render());
+    const value = this.render();
     // Since this is a patch, we can't call super.update(), so we capture
     // it off the proto chain and call it instead
-    update.call(this, changedProperties);
+    // update.call(this, changedProperties);
     if (this._$needsHydration) {
       this._$needsHydration = false;
-      hydrate(value, this.renderRoot, this.renderOptions);
+      awaitAll(value).then(syncValue => {
+        update.call(this, changedProperties);
+        hydrate(syncValue, this.renderRoot, this.renderOptions);
+      });
     } else {
+      update.call(this, changedProperties);
       render(value, this.renderRoot, this.renderOptions);
     }
   };
 };
 
 // TODO: Prototype
-async function withAsync(value: unknown) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (typeof value == 'object' && Array.isArray(value?.values)) {
+async function awaitAll(value: unknown) {
+  try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const values = value.values.map(async (value) => withAsync(await value));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    value.values = await Promise.all(values);
+    if (typeof value == "object" && Array.isArray(value?.values)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const values = value.values.map(async (value) => awaitAll(await value));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      value.values = await Promise.all(values);
+    }
+  } catch (e) {
+    console.error(e);
   }
   return value;
 }
