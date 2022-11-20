@@ -85,22 +85,20 @@ globalThis.litElementHydrateSupport = ({
 
   // Hydrate on first update when needed
   const update = Object.getPrototypeOf(LitElement.prototype).update;
-  LitElement.prototype.update = function (
+  LitElement.prototype.update = async function (
     this: PatchableLitElement,
     changedProperties: PropertyValues
   ) {
-    const value = this.render();
+    const value = this._$needsHydration
+      ? await awaitAll(this.render())
+      : this.render();
     // Since this is a patch, we can't call super.update(), so we capture
     // it off the proto chain and call it instead
-    // update.call(this, changedProperties);
+    update.call(this, changedProperties);
     if (this._$needsHydration) {
-      awaitAll(value).then((syncValue) => {
-        this._$needsHydration = false;
-        update.call(this, changedProperties);
-        hydrate(syncValue, this.renderRoot, this.renderOptions);
-      });
+      this._$needsHydration = false;
+      hydrate(value, this.renderRoot, this.renderOptions);
     } else {
-      update.call(this, changedProperties);
       render(value, this.renderRoot, this.renderOptions);
     }
   };
