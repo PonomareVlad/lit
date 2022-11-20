@@ -1,6 +1,6 @@
 {
   "name": "@lit-async/reactive-element",
-  "version": "1.4.2-mirror.1",
+  "version": "1.4.2-mirror.4",
   "publishConfig": {
     "access": "public"
   },
