@@ -1,6 +1,6 @@
 {
   "name": "@lit-async/lit-element",
-  "version": "3.2.2-mirror.3",
+  "version": "3.2.2-mirror.4",
   "publishConfig": {
     "access": "public"
   },

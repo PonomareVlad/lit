@@ -300,7 +300,7 @@ export const _$LE = {
 
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for LitElement usage.
-(globalThis.litElementVersions ??= []).push('3.2.2-mirror.3');
+(globalThis.litElementVersions ??= []).push('3.2.2-mirror.4');
 if (DEV_MODE && globalThis.litElementVersions.length > 1) {
   issueWarning!(
     'multiple-versions',
