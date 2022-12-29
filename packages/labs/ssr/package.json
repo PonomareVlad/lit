@@ -1,7 +1,7 @@
 {
   "name": "@worklit/ssr",
   "type": "module",
-  "version": "2.3.0",
+  "version": "2.3.0-worklit.1",
   "publishConfig": {
     "access": "public"
   },
