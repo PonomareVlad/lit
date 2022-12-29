@@ -1,6 +1,6 @@
 {
   "name": "@worklit/reactive-element",
-  "version": "1.5.0-worklit.1",
+  "version": "1.5.0-worklit.2",
   "publishConfig": {
     "access": "public"
   },
