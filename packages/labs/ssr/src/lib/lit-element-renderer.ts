@@ -9,6 +9,8 @@ import {LitElement, CSSResult, ReactiveElement} from 'lit';
 import {_$LE} from 'lit-element/private-ssr-support.js';
 import {render, RenderInfo} from './render-lit-html.js';
 
+const { customElements } = globalThis;
+
 export type Constructor<T> = {new (): T};
 
 const {attributeToProperty, changedProperties} = _$LE;
