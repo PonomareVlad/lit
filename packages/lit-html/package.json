@@ -1,6 +1,6 @@
 {
   "name": "@worklit/lit-html",
-  "version": "2.5.0-worklit.2",
+  "version": "2.5.0-worklit.4",
   "description": "HTML templates literals in JavaScript",
   "license": "BSD-3-Clause",
   "repository": {
@@ -10,6 +10,7 @@
   },
   "author": "Google LLC",
   "homepage": "https://lit.dev/",
+  "module": "node/lit-html.js",
   "main": "node/lit-html.js",
   "type": "module",
   "exports": {
