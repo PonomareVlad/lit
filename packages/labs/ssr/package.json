@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/ssr",
+  "name": "@worklit/ssr",
   "type": "module",
   "version": "2.3.0",
   "publishConfig": {
