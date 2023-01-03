@@ -2,6 +2,7 @@ import fs from "node:fs";
 
 const files = [
   "packages/lit-html/lit-html.js",
+  "packages/lit-html/is-server.js",
   "packages/lit-html/node/lit-html.js"
 ];
 
@@ -23,6 +24,12 @@ const replacer = path => {
       source = source.replace(
         `const i=globalThis,{document:s}=i`,
         `const i=globalThis,{document:s,window}=i`
+      );
+      break;
+    case "packages/lit-html/is-server.js":
+      source = source.replace(
+        `const o=!1;export{o as isServer};`,
+        `const o=!0;export{o as isServer};`
       );
       break;
     default:
