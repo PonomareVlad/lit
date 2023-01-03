@@ -11,6 +11,8 @@ import {render, RenderInfo} from './render-lit-html.js';
 
 import {ServerController} from '@lit-labs/ssr-client/controllers/server-controller.js';
 
+const {customElements} = globalThis;
+
 export type Constructor<T> = {new (): T};
 
 const {attributeToProperty, changedProperties, getControllers} = _$LE;

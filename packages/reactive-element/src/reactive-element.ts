@@ -30,6 +30,8 @@ export type {
 const NODE_MODE = false;
 const global = NODE_MODE ? globalThis : window;
 
+export const {HTMLElement} = global;
+
 if (NODE_MODE) {
   global.customElements ??= {
     define() {},

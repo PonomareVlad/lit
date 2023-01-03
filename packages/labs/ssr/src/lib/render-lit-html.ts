@@ -18,6 +18,8 @@ import {PartType} from 'lit/directive.js';
 import {isTemplateResult, getDirectiveClass} from 'lit/directive-helpers.js';
 import {_$LH} from 'lit-html/private-ssr-support.js';
 
+const {customElements} = globalThis;
+
 const {
   getTemplateHtml,
   marker,
