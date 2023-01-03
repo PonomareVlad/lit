@@ -1,6 +1,6 @@
 {
   "name": "@svalit/lit",
-  "version": "2.5.0",
+  "version": "2.5.0-async.1",
   "publishConfig": {
     "access": "public"
   },
