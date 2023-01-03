@@ -6,6 +6,7 @@
 
 const NODE_MODE = false;
 const global = NODE_MODE ? globalThis : window;
+const {Document, CSSStyleSheet} = global;
 
 /**
  * Whether the current browser supports `adoptedStyleSheets`.

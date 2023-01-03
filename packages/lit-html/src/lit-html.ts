@@ -14,6 +14,8 @@ const NODE_MODE = false;
 // Use window for browser builds because IE11 doesn't have globalThis.
 const global = NODE_MODE ? globalThis : window;
 
+const {document} = global;
+
 /**
  * Contains types that are part of the unstable debug API.
  *

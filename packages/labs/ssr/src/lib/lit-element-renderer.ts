@@ -9,9 +9,13 @@ import {LitElement, CSSResult, ReactiveElement} from 'lit';
 import {_$LE} from 'lit-element/private-ssr-support.js';
 import {render, RenderInfo} from './render-lit-html.js';
 
+import {ServerController} from '@lit-labs/ssr-client/controllers/server-controller.js';
+
+const {customElements} = globalThis;
+
 export type Constructor<T> = {new (): T};
 
-const {attributeToProperty, changedProperties} = _$LE;
+const {attributeToProperty, changedProperties, getControllers} = _$LE;
 
 /**
  * ElementRenderer implementation for LitElements
@@ -56,6 +60,22 @@ export class LitElementRenderer extends ElementRenderer {
   }
 
   *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+    const serverControllers = getControllers(this.element)
+      ?.map((c: ServerController) => c.serverUpdateComplete)
+      .filter((p: Promise<unknown>) => !!p);
+    if (serverControllers?.length > 0) {
+      const continuation = Promise.all(serverControllers).then((_) =>
+        this._renderShadowContents(renderInfo)
+      );
+      yield continuation as unknown as string;
+    } else {
+      yield* this._renderShadowContents(renderInfo);
+    }
+  }
+
+  private *_renderShadowContents(
+    renderInfo: RenderInfo
+  ): IterableIterator<string> {
     // Render styles.
     const styles = (this.element.constructor as typeof LitElement)
       .elementStyles;

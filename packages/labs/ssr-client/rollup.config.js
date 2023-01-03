@@ -9,6 +9,6 @@ import {createRequire} from 'module';
 
 export default litProdConfig({
   packageName: createRequire(import.meta.url)('./package.json').name,
-  entryPoints: ['index', 'directives/render-light'],
+  entryPoints: ['index', 'controllers/server-controller', 'directives/render-light', 'directives/server-until'],
   external: ['lit/directive.js', 'lit/directive-helpers.js'],
 });

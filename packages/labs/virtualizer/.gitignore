@@ -1,6 +1,10 @@
 /layouts/
 /polyfillLoaders/
 /polyfills/
+/events.js
+/events.d.ts
+/events.d.ts.map
+/events.js.map
 /lit-virtualizer.js
 /lit-virtualizer.d.ts
 /lit-virtualizer.d.ts.map

@@ -137,6 +137,7 @@ const stableProperties = {
   _$initialize: 'T',
   // lit-html: Disconnectable interface (used by lit-html and AsyncDirective)
   _$isConnected: 'U',
+  _$controllers: 'V',
 };
 
 const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

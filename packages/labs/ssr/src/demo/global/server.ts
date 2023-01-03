@@ -9,13 +9,14 @@ import staticFiles from 'koa-static';
 import koaNodeResolve from 'koa-node-resolve';
 import {URL} from 'url';
 import * as path from 'path';
-import {Readable} from 'stream';
+import {readableFrom} from '../../lib/readable.js';
 import {renderAppWithInitialData} from './app-server.js';
 
 const {nodeResolve} = koaNodeResolve;
 
 const moduleUrl = new URL(import.meta.url);
 const packageRoot = path.resolve(moduleUrl.pathname, '../../..');
+const repoRoot = path.resolve(moduleUrl.pathname, '../../../../../..');
 
 const port = 8080;
 
@@ -31,10 +32,11 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 
   const ssrResult = renderAppWithInitialData();
   ctx.type = 'text/html';
-  ctx.body = Readable.from(ssrResult);
+  ctx.body = readableFrom(ssrResult, true);
 });
 app.use(nodeResolve({}));
 app.use(staticFiles(packageRoot));
+app.use(staticFiles(repoRoot));
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

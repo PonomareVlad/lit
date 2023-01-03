@@ -18,6 +18,8 @@ import {PartType} from 'lit/directive.js';
 import {isTemplateResult, getDirectiveClass} from 'lit/directive-helpers.js';
 import {_$LH} from 'lit-html/private-ssr-support.js';
 
+const {customElements} = globalThis;
+
 const {
   getTemplateHtml,
   marker,
@@ -48,6 +50,7 @@ import {parseFragment} from 'parse5';
 import {isElementNode, isCommentNode, traverse} from '@parse5/tools';
 
 import {isRenderLightDirective} from '@lit-labs/ssr-client/directives/render-light.js';
+import {isServerUntilDirective} from '@lit-labs/ssr-client/directives/server-until.js';
 import {reflectedAttributeName} from './reflected-attributes.js';
 
 import {LitElementRenderer} from './lit-element-renderer.js';
@@ -569,6 +572,13 @@ function* renderValue(
       yield* instance.renderLight(renderInfo);
     }
     value = null;
+  } else if (isServerUntilDirective(value)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const promise = (value as DirectiveResult).values[0] as PromiseLike<unknown>;
+    const continuation = promise.then((v) => renderValue(v, renderInfo));
+    yield continuation as unknown as string;
+    return;
   } else {
     value = resolveDirective(
       connectedDisconnectable({type: PartType.CHILD}) as ChildPart,
