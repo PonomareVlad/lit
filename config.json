@@ -1,9 +1,13 @@
 {
-  "version": 1,
-  "branch": "test",
+  "version": 0,
+  "branch": "async",
   "packages": [
-    "lit-element",
+    "lit",
     "lit-html",
-    "lit"
+    "lit-element",
+    "reactive-element",
+    "labs/ssr-client",
+    "labs/task",
+    "labs/ssr"
   ]
 }
