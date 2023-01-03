@@ -36,6 +36,7 @@
     "update-version": "node scripts/update-version.js",
     "new-version": "node scripts/new-version.js",
     "publish": "node scripts/publish.js",
+    "commit": "node scripts/commit.js",
     "publish-new-version": "npm run new-version && npm run update-version && npm run publish"
   },
   "wireit": {
