@@ -1,6 +1,6 @@
 {
   "name": "@svalit/lit-element",
-  "version": "3.2.2-async-worker.1",
+  "version": "3.2.2-async-worker.2",
   "publishConfig": {
     "access": "public"
   },
