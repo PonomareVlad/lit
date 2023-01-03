@@ -1,5 +1,5 @@
 {
-  "name": "@lit-labs/ssr",
+  "name": "@svalit/ssr",
   "type": "module",
   "version": "2.3.0",
   "publishConfig": {
