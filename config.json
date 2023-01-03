@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "branch": "test",
+  "packages": [
+    "lit-element",
+    "lit-html",
+    "lit"
+  ]
+}

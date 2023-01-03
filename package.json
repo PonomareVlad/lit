@@ -32,7 +32,11 @@
     "changeset": "changeset",
     "version": "npm run changeset version && npm run update-version-vars",
     "update-version-vars": "node scripts/update-version-variables.js",
-    "release": "npm run build && npm run changeset publish"
+    "release": "npm run build && npm run changeset publish",
+    "update-version": "node scripts/update-version.js",
+    "new-version": "node scripts/new-version.js",
+    "publish": "node scripts/publish.js",
+    "publish-new-version": "npm run new-version && npm run update-version && npm run publish"
   },
   "wireit": {
     "build": {
