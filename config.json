@@ -1,9 +1,5 @@
 {
-  "version": 1,
-  "branch": "test",
-  "packages": [
-    "lit-element",
-    "lit-html",
-    "lit"
-  ]
+  "version": 0,
+  "branch": "worker",
+  "packages": ["reactive-element", "lit-html", "labs/ssr"]
 }
