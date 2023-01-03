@@ -1,7 +1,7 @@
 {
   "name": "@svalit/ssr",
   "type": "module",
-  "version": "2.3.0-worker.2",
+  "version": "2.3.0-worker.3",
   "publishConfig": {
     "access": "public"
   },
