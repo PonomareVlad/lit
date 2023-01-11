@@ -1,6 +1,6 @@
 {
   "name": "@svalit/lit-html",
-  "version": "2.6.0-edge.1",
+  "version": "2.6.0-edge.2",
   "description": "HTML templates literals in JavaScript",
   "license": "BSD-3-Clause",
   "repository": {

@@ -1,7 +1,7 @@
 {
   "name": "@svalit/ssr",
   "type": "module",
-  "version": "3.0.0-edge.1",
+  "version": "3.0.0-edge.2",
   "publishConfig": {
     "access": "public"
   },
