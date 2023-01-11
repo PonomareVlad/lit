@@ -2,12 +2,7 @@
   "version": 0,
   "branch": "node",
   "packages": [
-    "lit",
     "lit-html",
-    "lit-element",
-    "reactive-element",
-    "labs/ssr-client",
-    "labs/task",
-    "labs/ssr"
+    "reactive-element"
   ]
 }
