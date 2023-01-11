@@ -1,5 +1,5 @@
 {
-  "version": 1,
-  "branch": "node",
+  "version": 0,
+  "branch": "edge",
   "packages": ["lit-html", "reactive-element"]
 }
