@@ -1,5 +1,9 @@
 {
-  "version": 0,
+  "version": 1,
   "branch": "edge",
-  "packages": ["lit-html", "reactive-element"]
+  "packages": [
+    "lit-html",
+    "reactive-element",
+    "labs/ssr"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@svalit/reactive-element",
-  "version": "1.6.0-node.1",
+  "version": "1.6.0-edge.1",
   "publishConfig": {
     "access": "public"
   },
