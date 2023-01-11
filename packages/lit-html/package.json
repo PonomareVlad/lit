@@ -10,7 +10,8 @@
   },
   "author": "Google LLC",
   "homepage": "https://lit.dev/",
-  "main": "lit-html.js",
+  "module": "node/lit-html.js",
+  "main": "node/lit-html.js",
   "type": "module",
   "exports": {
     ".": {
@@ -19,8 +20,8 @@
         "development": "./node/development/lit-html.js",
         "default": "./node/lit-html.js"
       },
-      "development": "./development/lit-html.js",
-      "default": "./lit-html.js"
+      "development": "./node/development/lit-html.js",
+      "default": "./node/lit-html.js"
     },
     "./async-directive.js": {
       "types": "./development/async-directive.d.ts",
@@ -28,8 +29,8 @@
         "development": "./node/development/async-directive.js",
         "default": "./node/async-directive.js"
       },
-      "development": "./development/async-directive.js",
-      "default": "./async-directive.js"
+      "development": "./node/development/async-directive.js",
+      "default": "./node/async-directive.js"
     },
     "./directive-helpers.js": {
       "types": "./development/directive-helpers.d.ts",
@@ -37,8 +38,8 @@
         "development": "./node/development/directive-helpers.js",
         "default": "./node/directive-helpers.js"
       },
-      "development": "./development/directive-helpers.js",
-      "default": "./directive-helpers.js"
+      "development": "./node/development/directive-helpers.js",
+      "default": "./node/directive-helpers.js"
     },
     "./directive.js": {
       "types": "./development/directive.d.ts",
@@ -46,8 +47,8 @@
         "development": "./node/development/directive.js",
         "default": "./node/directive.js"
       },
-      "development": "./development/directive.js",
-      "default": "./directive.js"
+      "development": "./node/development/directive.js",
+      "default": "./node/directive.js"
     },
     "./directives/async-append.js": {
       "types": "./development/directives/async-append.d.ts",
@@ -55,8 +56,8 @@
         "development": "./node/development/directives/async-append.js",
         "default": "./node/directives/async-append.js"
       },
-      "development": "./development/directives/async-append.js",
-      "default": "./directives/async-append.js"
+      "development": "./node/development/directives/async-append.js",
+      "default": "./node/directives/async-append.js"
     },
     "./directives/async-replace.js": {
       "types": "./development/directives/async-replace.d.ts",
@@ -64,8 +65,8 @@
         "development": "./node/development/directives/async-replace.js",
         "default": "./node/directives/async-replace.js"
       },
-      "development": "./development/directives/async-replace.js",
-      "default": "./directives/async-replace.js"
+      "development": "./node/development/directives/async-replace.js",
+      "default": "./node/directives/async-replace.js"
     },
     "./directives/cache.js": {
       "types": "./development/directives/cache.d.ts",
@@ -73,8 +74,8 @@
         "development": "./node/development/directives/cache.js",
         "default": "./node/directives/cache.js"
       },
-      "development": "./development/directives/cache.js",
-      "default": "./directives/cache.js"
+      "development": "./node/development/directives/cache.js",
+      "default": "./node/directives/cache.js"
     },
     "./directives/choose.js": {
       "types": "./development/directives/choose.d.ts",
@@ -82,8 +83,8 @@
         "development": "./node/development/directives/choose.js",
         "default": "./node/directives/choose.js"
       },
-      "development": "./development/directives/choose.js",
-      "default": "./directives/choose.js"
+      "development": "./node/development/directives/choose.js",
+      "default": "./node/directives/choose.js"
     },
     "./directives/class-map.js": {
       "types": "./development/directives/class-map.d.ts",
@@ -91,8 +92,8 @@
         "development": "./node/development/directives/class-map.js",
         "default": "./node/directives/class-map.js"
       },
-      "development": "./development/directives/class-map.js",
-      "default": "./directives/class-map.js"
+      "development": "./node/development/directives/class-map.js",
+      "default": "./node/directives/class-map.js"
     },
     "./directives/guard.js": {
       "types": "./development/directives/guard.d.ts",
@@ -100,8 +101,8 @@
         "development": "./node/development/directives/guard.js",
         "default": "./node/directives/guard.js"
       },
-      "development": "./development/directives/guard.js",
-      "default": "./directives/guard.js"
+      "development": "./node/development/directives/guard.js",
+      "default": "./node/directives/guard.js"
     },
     "./directives/if-defined.js": {
       "types": "./development/directives/if-defined.d.ts",
@@ -109,8 +110,8 @@
         "development": "./node/development/directives/if-defined.js",
         "default": "./node/directives/if-defined.js"
       },
-      "development": "./development/directives/if-defined.js",
-      "default": "./directives/if-defined.js"
+      "development": "./node/development/directives/if-defined.js",
+      "default": "./node/directives/if-defined.js"
     },
     "./directives/join.js": {
       "types": "./development/directives/join.d.ts",
@@ -118,8 +119,8 @@
         "development": "./node/development/directives/join.js",
         "default": "./node/directives/join.js"
       },
-      "development": "./development/directives/join.js",
-      "default": "./directives/join.js"
+      "development": "./node/development/directives/join.js",
+      "default": "./node/directives/join.js"
     },
     "./directives/keyed.js": {
       "types": "./development/directives/keyed.d.ts",
@@ -127,8 +128,8 @@
         "development": "./node/development/directives/keyed.js",
         "default": "./node/directives/keyed.js"
       },
-      "development": "./development/directives/keyed.js",
-      "default": "./directives/keyed.js"
+      "development": "./node/development/directives/keyed.js",
+      "default": "./node/directives/keyed.js"
     },
     "./directives/live.js": {
       "types": "./development/directives/live.d.ts",
@@ -136,8 +137,8 @@
         "development": "./node/development/directives/live.js",
         "default": "./node/directives/live.js"
       },
-      "development": "./development/directives/live.js",
-      "default": "./directives/live.js"
+      "development": "./node/development/directives/live.js",
+      "default": "./node/directives/live.js"
     },
     "./directives/map.js": {
       "types": "./development/directives/map.d.ts",
@@ -145,8 +146,8 @@
         "development": "./node/development/directives/map.js",
         "default": "./node/directives/map.js"
       },
-      "development": "./development/directives/map.js",
-      "default": "./directives/map.js"
+      "development": "./node/development/directives/map.js",
+      "default": "./node/directives/map.js"
     },
     "./directives/range.js": {
       "types": "./development/directives/range.d.ts",
@@ -154,8 +155,8 @@
         "development": "./node/development/directives/range.js",
         "default": "./node/directives/range.js"
       },
-      "development": "./development/directives/range.js",
-      "default": "./directives/range.js"
+      "development": "./node/development/directives/range.js",
+      "default": "./node/directives/range.js"
     },
     "./directives/ref.js": {
       "types": "./development/directives/ref.d.ts",
@@ -163,8 +164,8 @@
         "development": "./node/development/directives/ref.js",
         "default": "./node/directives/ref.js"
       },
-      "development": "./development/directives/ref.js",
-      "default": "./directives/ref.js"
+      "development": "./node/development/directives/ref.js",
+      "default": "./node/directives/ref.js"
     },
     "./directives/repeat.js": {
       "types": "./development/directives/repeat.d.ts",
@@ -172,8 +173,8 @@
         "development": "./node/development/directives/repeat.js",
         "default": "./node/directives/repeat.js"
       },
-      "development": "./development/directives/repeat.js",
-      "default": "./directives/repeat.js"
+      "development": "./node/development/directives/repeat.js",
+      "default": "./node/directives/repeat.js"
     },
     "./directives/style-map.js": {
       "types": "./development/directives/style-map.d.ts",
@@ -181,8 +182,8 @@
         "development": "./node/development/directives/style-map.js",
         "default": "./node/directives/style-map.js"
       },
-      "development": "./development/directives/style-map.js",
-      "default": "./directives/style-map.js"
+      "development": "./node/development/directives/style-map.js",
+      "default": "./node/directives/style-map.js"
     },
     "./directives/template-content.js": {
       "types": "./development/directives/template-content.d.ts",
@@ -190,8 +191,8 @@
         "development": "./node/development/directives/template-content.js",
         "default": "./node/directives/template-content.js"
       },
-      "development": "./development/directives/template-content.js",
-      "default": "./directives/template-content.js"
+      "development": "./node/development/directives/template-content.js",
+      "default": "./node/directives/template-content.js"
     },
     "./directives/unsafe-html.js": {
       "types": "./development/directives/unsafe-html.d.ts",
@@ -199,8 +200,8 @@
         "development": "./node/development/directives/unsafe-html.js",
         "default": "./node/directives/unsafe-html.js"
       },
-      "development": "./development/directives/unsafe-html.js",
-      "default": "./directives/unsafe-html.js"
+      "development": "./node/development/directives/unsafe-html.js",
+      "default": "./node/directives/unsafe-html.js"
     },
     "./directives/unsafe-svg.js": {
       "types": "./development/directives/unsafe-svg.d.ts",
@@ -208,8 +209,8 @@
         "development": "./node/development/directives/unsafe-svg.js",
         "default": "./node/directives/unsafe-svg.js"
       },
-      "development": "./development/directives/unsafe-svg.js",
-      "default": "./directives/unsafe-svg.js"
+      "development": "./node/development/directives/unsafe-svg.js",
+      "default": "./node/directives/unsafe-svg.js"
     },
     "./directives/until.js": {
       "types": "./development/directives/until.d.ts",
@@ -217,8 +218,8 @@
         "development": "./node/development/directives/until.js",
         "default": "./node/directives/until.js"
       },
-      "development": "./development/directives/until.js",
-      "default": "./directives/until.js"
+      "development": "./node/development/directives/until.js",
+      "default": "./node/directives/until.js"
     },
     "./directives/when.js": {
       "types": "./development/directives/when.d.ts",
@@ -226,8 +227,8 @@
         "development": "./node/development/directives/when.js",
         "default": "./node/directives/when.js"
       },
-      "development": "./development/directives/when.js",
-      "default": "./directives/when.js"
+      "development": "./node/development/directives/when.js",
+      "default": "./node/directives/when.js"
     },
     "./experimental-hydrate.js": {
       "types": "./development/experimental-hydrate.d.ts",
@@ -235,8 +236,8 @@
         "development": "./node/development/experimental-hydrate.js",
         "default": "./node/experimental-hydrate.js"
       },
-      "development": "./development/experimental-hydrate.js",
-      "default": "./experimental-hydrate.js"
+      "development": "./node/development/experimental-hydrate.js",
+      "default": "./node/experimental-hydrate.js"
     },
     "./polyfill-support.js": {
       "types": "./development/polyfill-support.d.ts",
@@ -244,8 +245,8 @@
         "development": "./node/development/polyfill-support.js",
         "default": "./node/polyfill-support.js"
       },
-      "development": "./development/polyfill-support.js",
-      "default": "./polyfill-support.js"
+      "development": "./node/development/polyfill-support.js",
+      "default": "./node/polyfill-support.js"
     },
     "./private-ssr-support.js": {
       "types": "./development/private-ssr-support.d.ts",
@@ -253,8 +254,8 @@
         "development": "./node/development/private-ssr-support.js",
         "default": "./node/private-ssr-support.js"
       },
-      "development": "./development/private-ssr-support.js",
-      "default": "./private-ssr-support.js"
+      "development": "./node/development/private-ssr-support.js",
+      "default": "./node/private-ssr-support.js"
     },
     "./static.js": {
       "types": "./development/static.d.ts",
@@ -262,8 +263,8 @@
         "development": "./node/development/static.js",
         "default": "./node/static.js"
       },
-      "development": "./development/static.js",
-      "default": "./static.js"
+      "development": "./node/development/static.js",
+      "default": "./node/static.js"
     },
     "./is-server.js": {
       "types": "./development/is-server.d.ts",
@@ -271,8 +272,8 @@
         "development": "./node/development/is-server.js",
         "default": "./node/is-server.js"
       },
-      "development": "./development/is-server.js",
-      "default": "./is-server.js"
+      "development": "./node/development/is-server.js",
+      "default": "./node/is-server.js"
     }
   },
   "scripts": {
