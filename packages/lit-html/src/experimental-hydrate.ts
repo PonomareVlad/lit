@@ -17,7 +17,7 @@ import {
 // In the Node build, this import will be injected by Rollup:
 // import {Buffer} from 'buffer';
 
-const NODE_MODE = false;
+// const NODE_MODE = false;
 
 const {
   _TemplateInstance: TemplateInstance,
@@ -441,5 +441,5 @@ export const digestForTemplateResult = (templateResult: TemplateResult) => {
   // for `btoa` when they set up their VM context, we instead inject an import
   // for `Buffer` from Node's built-in `buffer` module in our Rollup config (see
   // note at the top of this file), and use that.
-  return NODE_MODE ? Buffer.from(str, 'binary').toString('base64') : btoa(str);
+  return /*NODE_MODE ? Buffer.from(str, 'binary').toString('base64') :*/ btoa(str);
 };
