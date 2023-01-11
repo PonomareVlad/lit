@@ -11,6 +11,7 @@ const replacer = (path) => {
   switch (path) {
     case 'packages/lit-html/lit-html.js':
       source = source.replace(`window`, `globalThis`);
+      source = source.replace(`=document`, `=i.document`);
       break;
     default:
       return;
