@@ -11,6 +11,7 @@
 import {html} from 'lit';
 import {LitElement, css} from 'lit';
 import {property} from 'lit/decorators/property.js';
+import {customElements} from "@lit-labs/ssr-dom-shim";
 
 export const initialData = {
   name: 'SSR',

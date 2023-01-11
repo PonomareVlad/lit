@@ -52,6 +52,8 @@ import {reflectedAttributeName} from './reflected-attributes.js';
 
 import {LitElementRenderer} from './lit-element-renderer.js';
 
+import {customElements} from "@lit-labs/ssr-dom-shim";
+
 import type {RenderResult} from './render-result.js';
 export type {RenderResult} from './render-result.js';
 

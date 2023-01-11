@@ -9,6 +9,7 @@ import {LitElement, CSSResult, ReactiveElement} from 'lit';
 import {_$LE} from 'lit-element/private-ssr-support.js';
 import {render, RenderInfo} from './render-lit-html.js';
 import type {RenderResult} from './render-result.js';
+import {customElements} from "@lit-labs/ssr-dom-shim";
 
 export type Constructor<T> = {new (): T};
 

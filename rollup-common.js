@@ -270,10 +270,10 @@ const injectNodeDomShimIntoReactiveElement = [
     customElements: ['@lit-labs/ssr-dom-shim', 'customElements'],
     include: ['**/packages/reactive-element/development/reactive-element.js'],
   }),
-  inject({
+  /*inject({
     Buffer: ['buffer', 'Buffer'],
-    include: ['**/packages/lit-html/development/experimental-hydrate.js'],
-  }),
+    include: ['**!/packages/lit-html/development/experimental-hydrate.js'],
+  }),*/
   replace({
     values: {
       'extends HTMLElement': 'extends (globalThis.HTMLElement ?? HTMLElement)',
