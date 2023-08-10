@@ -28,10 +28,12 @@ const attributesForElement = (
 /**
  * Extends EventTarget to have a parent reference and adds event propagation.
  */
-export class EventTargetWithParent extends EventTarget {
+export class EventTargetWithParent extends (globalThis.EventTarget ?? Object) {
   __eventTargetParent: EventTarget | undefined;
 
-  override dispatchEvent(event: Event): boolean {
+  override dispatchEvent(event: EventWithPath): boolean {
+    event.__path.push(this);
+
     // TODO (justinfagnani): This doesn't implement capture at all.
     // To implement capture we'd need to patch addEventListener to track the
     // capturing listeners separately, then call into a capture method here
@@ -49,18 +51,37 @@ export class EventTargetWithParent extends EventTarget {
   }
 }
 
+export class EventWithPath extends (globalThis.Event ?? Object) {
+  __target: EventTarget;
+  __path: EventTarget[];
+
+  get target() {
+    return this.__target || super.target;
+  }
+
+  constructor(type: string, eventInitDict?: EventInit) {
+    super(type, eventInitDict);
+    this.__target = this.target;
+    this.__path = [];
+  }
+
+  composedPath() {
+    return this.__path;
+  }
+}
+
+const EventShim = class Event extends EventWithPath {}
+const EventShimWithRealType = EventShim as object as typeof Event;
+export {EventShimWithRealType as Event};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class CustomEvent<T = any> extends Event {
+export class CustomEvent<T = any> extends EventShim {
   detail: T;
 
   constructor(type: string, init?: CustomEventInit<T>) {
     super(type, init);
     this.detail = init?.detail as T;
   }
-}
-
-class Element extends EventTargetWithParent {
-  readonly parentNode: Element | null = null;
 }
 
 // The typings around the exports below are a little funky:
@@ -74,7 +95,7 @@ class Element extends EventTargetWithParent {
 //    `const ElementShimWithRealType = ElementShim as object as typeof Element;`.
 // 4. We want the exported names to match the real ones, hence e.g.
 //    `export {ElementShimWithRealType as Element}`.
-const ElementShim = class Element {
+const ElementShim = class Element extends EventTargetWithParent {
   get attributes() {
     return Array.from(attributesForElement(this)).map(([name, value]) => ({
       name,
