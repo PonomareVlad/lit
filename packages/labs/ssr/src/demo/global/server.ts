@@ -9,9 +9,11 @@ import staticFiles from 'koa-static';
 import koaNodeResolve from 'koa-node-resolve';
 import {URL} from 'url';
 import * as path from 'path';
-import {renderAppWithInitialData} from './app-server.js';
-import {RenderResultReadable} from '../../lib/render-result-readable.js';
 import mount from 'koa-mount';
+import {readableFrom} from '../../lib/readable.js';
+import {render} from '../../lib/render.js';
+import {template, initialData, renderApp} from '../template.js';
+
 const {nodeResolve} = koaNodeResolve;
 
 const moduleUrl = new URL(import.meta.url);
@@ -30,9 +32,9 @@ app.use(async (ctx: Koa.Context, next: Function) => {
     return;
   }
 
-  const ssrResult = renderAppWithInitialData();
+  const ssrResult = renderApp(() => render(template(initialData)));
   ctx.type = 'text/html';
-  ctx.body = new RenderResultReadable(ssrResult);
+  ctx.body = readableFrom(ssrResult, true);
 });
 app.use(nodeResolve({root: monorepoRoot}));
 app.use(
