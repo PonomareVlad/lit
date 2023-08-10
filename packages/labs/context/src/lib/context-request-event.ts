@@ -6,6 +6,16 @@
 
 import {ContextType, Context} from './create-context.js';
 
+// In the Node build, this import will be injected by Rollup:
+// import {Event} from '@lit-labs/ssr-dom-shim';
+
+const NODE_MODE = false;
+const global = NODE_MODE ? globalThis : window;
+
+if (NODE_MODE) {
+  global.Event ??= Event;
+}
+
 declare global {
   interface HTMLElementEventMap {
     /**
