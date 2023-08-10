@@ -35,7 +35,7 @@ export interface DirectiveResult<C extends DirectiveClass = DirectiveClass> {
    * This property needs to remain unminified.
    * @internal */
   ['_$litDirective$']: C;
-  /** @internal */
+  /** @public */
   values: DirectiveParameters<InstanceType<C>>;
 }
 

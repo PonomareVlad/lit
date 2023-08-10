@@ -13,6 +13,8 @@ export default litProdConfig({
     'index',
     'lit-element-hydrate-support',
     'directives/render-light',
+    'directives/server-until',
+    'controllers/server-controller',
   ],
   external: ['lit/directive.js', 'lit/directive-helpers.js'],
   includeNodeBuild: true,

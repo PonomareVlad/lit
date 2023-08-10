@@ -10,7 +10,7 @@ import koaNodeResolve from 'koa-node-resolve';
 import {URL} from 'url';
 import * as path from 'path';
 import {ModuleLoader} from '../../lib/module-loader.js';
-import {Readable} from 'stream';
+import {readableFrom} from '../../lib/readable.js';
 import mount from 'koa-mount';
 
 const {nodeResolve} = koaNodeResolve;
@@ -33,15 +33,15 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 
   const moduleLoader = new ModuleLoader();
   const importResult = await moduleLoader.importModule(
-    './app-server.js',
+    './render-app.js',
     import.meta.url
   );
   const {renderAppWithInitialData} = importResult.module
-    .namespace as typeof import('./app-server.js');
+    .namespace as typeof import('./render-app.js');
   const ssrResult = await renderAppWithInitialData();
 
   ctx.type = 'text/html';
-  ctx.body = Readable.from(ssrResult);
+  ctx.body = readableFrom(ssrResult, true);
 });
 app.use(nodeResolve({root: monorepoRoot}));
 app.use(
