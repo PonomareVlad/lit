@@ -7,7 +7,9 @@
 import {Readable} from 'stream';
 import {RenderResult} from './render-result.js';
 
-type RenderResultIterator = Iterator<string | Promise<RenderResult>>;
+type RenderResultIterator = Iterator<
+  string | Promise<RenderResult | AsyncIterable<string>>
+>;
 
 /**
  * A Readable that reads from a RenderResult.
@@ -70,7 +72,7 @@ export class RenderResultReadable extends Readable {
       const value = next.value;
 
       if (typeof value === 'string') {
-        if (this.push(value) === false) {
+        if (!this.push(value)) {
           // The consumer doesn't want any more values. Return for now and
           // we may get a new call to _read()
           return;
@@ -78,7 +80,15 @@ export class RenderResultReadable extends Readable {
       } else {
         // Must be a Promise
         this._iterators.push(iterator);
-        iterator = (await value)[Symbol.iterator]() as RenderResultIterator;
+        const result = await value;
+        if (Symbol.asyncIterator in result)
+          for await (const chunk of result) {
+            if (!this.push(chunk)) return;
+          }
+        else
+          iterator = (result as RenderResult)[
+            Symbol.iterator
+          ]() as RenderResultIterator;
       }
     }
     // Pushing `null` ends the stream

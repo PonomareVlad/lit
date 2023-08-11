@@ -54,6 +54,7 @@ import {isElementNode, isCommentNode, traverse} from '@parse5/tools';
 
 import {isRenderLightDirective} from '@lit-labs/ssr-client/directives/render-light.js';
 import {isServerUntilDirective} from '@lit-labs/ssr-client/directives/server-until.js';
+import {isServerAsyncAppendDirective} from '@lit-labs/ssr-client/directives/server-async-append.js';
 import {reflectedAttributeName} from './reflected-attributes.js';
 
 import type {RenderResult} from './render-result.js';
@@ -562,6 +563,9 @@ export function* renderValue(
       .values[0] as PromiseLike<unknown>;
     const continuation = promise.then((v) => renderValue(v, renderInfo));
     yield continuation as unknown as string;
+    return;
+  } else if (isServerAsyncAppendDirective(value)) {
+    yield Promise.resolve((value as DirectiveResult).values[0] as AsyncIterable<string>);
     return;
   } else {
     value = resolveDirective(

@@ -6,20 +6,26 @@
 
 import {Readable} from 'stream';
 
-export type MaybeAsyncIterable<T> = Iterable<T | Promise<MaybeAsyncIterable<T>>>;
+export type MaybeAsyncIterable<T> = Iterable<
+  T | Promise<MaybeAsyncIterable<T>> | AsyncIterable<T>
+>;
 
 async function* withAsync(
   iterable: MaybeAsyncIterable<string>
 ): AsyncIterable<string> {
-  for (const value of iterable) {
-    if (
-      typeof (value as Promise<MaybeAsyncIterable<string>>)?.then === 'function'
-    ) {
-      yield* withAsync(await (value as Promise<MaybeAsyncIterable<string>>));
-    } else {
-      yield value as string;
+  if (Symbol.asyncIterator in iterable)
+    for await (const value of iterable) yield value as string;
+  else
+    for (const value of iterable as MaybeAsyncIterable<string>) {
+      if (
+        typeof (value as Promise<MaybeAsyncIterable<string>>)?.then ===
+        'function'
+      ) {
+        yield* withAsync(await (value as Promise<MaybeAsyncIterable<string>>));
+      } else {
+        yield value as string;
+      }
     }
-  }
 }
 
 export const readableFrom = (

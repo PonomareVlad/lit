@@ -17,16 +17,24 @@
  * The utility functions {@link collectRenderResult} and
  * {@link collectRenderResultSync} do this for you.
  */
-export type RenderResult = Iterable<string | Promise<RenderResult>>;
+export type RenderResult = Iterable<
+  string | Promise<RenderResult | AsyncIterable<string>>
+>;
 
 /**
  * Joins a RenderResult into a string
  */
-export const collectResult = async (result: RenderResult): Promise<string> => {
+export const collectResult = async (
+  result: RenderResult | AsyncIterable<string>
+): Promise<string> => {
   let value = '';
-  for (const chunk of result) {
-    value +=
-      typeof chunk === 'string' ? chunk : await collectResult(await chunk);
+  if (Symbol.asyncIterator in result) {
+    for await (const chunk of result) value += chunk;
+  } else if (Symbol.iterator in result) {
+    for (const chunk of result as RenderResult) {
+      value +=
+        typeof chunk === 'string' ? chunk : await collectResult(await chunk);
+    }
   }
   return value;
 };

@@ -127,7 +127,7 @@ export class LitElementRenderer extends ElementRenderer {
     }
     // Render template
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    yield* renderValue((this.element as any).render(), renderInfo);
+    yield* renderValue((this.element as any).render(), renderInfo) as IterableIterator<string | Promise<RenderResult>>;
   }
 
   override *renderLight(renderInfo: RenderInfo): RenderResult {

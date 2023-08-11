@@ -135,7 +135,7 @@ export const template = (data: {
         `
     )}`;
 
-export function* renderApp(body: () => Iterable<string | Promise<RenderResult>>) {
+export function* renderApp(body: () => RenderResult) {
   yield `
     <!doctype html>
     <html>

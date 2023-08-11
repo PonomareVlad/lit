@@ -10,7 +10,7 @@ import koaNodeResolve from 'koa-node-resolve';
 import {URL} from 'url';
 import * as path from 'path';
 import {ModuleLoader} from '../../lib/module-loader.js';
-import {readableFrom} from '../../lib/readable.js';
+import {MaybeAsyncIterable, readableFrom} from '../../lib/readable.js';
 import mount from 'koa-mount';
 
 const {nodeResolve} = koaNodeResolve;
@@ -41,7 +41,7 @@ app.use(async (ctx: Koa.Context, next: Function) => {
   const ssrResult = await renderAppWithInitialData();
 
   ctx.type = 'text/html';
-  ctx.body = readableFrom(ssrResult, true);
+  ctx.body = readableFrom(ssrResult as MaybeAsyncIterable<string>, true);
 });
 app.use(nodeResolve({root: monorepoRoot}));
 app.use(
