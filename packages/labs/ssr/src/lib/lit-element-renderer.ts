@@ -76,7 +76,7 @@ export class LitElementRenderer extends ElementRenderer {
     // any DOM APIs _except_ addEventListener() - which is obviously a big and
     // bad assumption. We probably need a new SSR-compatible connected callback.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (this.element as any)?.connectedCallback();
+    (this.element as any)?.serverCallback();
 
     // Call LitElement's `willUpdate` method.
     // Note, this method is required not to use DOM APIs.
