@@ -3,10 +3,9 @@ import git from 'isomorphic-git';
 import {spawnSync} from 'node:child_process';
 import fork from '../fork.json' assert {type: 'json'};
 
-const dir = '../';
+const dir = '.';
 const options = {fs, dir};
 const {packages = {}} = fork;
-const dirURL = new URL(dir, import.meta.url);
 
 let version = 1;
 const tags = await git.listTags(options);
@@ -28,17 +27,28 @@ console.log('🏷️', tag);
 await git.tag({...options, ref: tag, force: true});
 
 Object.entries(packages).forEach(([name, path]) => {
-  const url = new URL(`${path}/`, dirURL);
+  const url = new URL(`../${path}/`, import.meta.url);
   const packageURL = new URL('./package.json', url);
   const packageJSON = fs.readFileSync(packageURL);
   const packageData = JSON.parse(packageJSON.toString());
   const version = `${packageData.version.split('-', 1).at(0)}-${tag}`;
-  console.log('📦', name, version, path);
   Object.assign(packageData, {name, version});
+  console.log('📦', name, version, path);
   fs.writeFileSync(packageURL, JSON.stringify(packageData, null, 2));
+});
+
+const args = ['run', 'update-version-vars'];
+const spawnOptions = {cwd: new URL('..', import.meta.url)};
+const {stdout, stderr, error} = spawnSync('npm', args, spawnOptions);
+if (stdout.length) console.debug(stdout.toString());
+if (stderr.stderr) console.error(stderr.toString());
+if (error) console.error(error);
+
+Object.values(packages).forEach(path => {
+  const url = new URL(`../${path}/`, import.meta.url);
   const args = ['publish', `--tag=${branch}`, '--access=public'];
-  const {status, stdout, stderr, error} = spawnSync('npm', args, {cwd: url});
-  if (stdout.length) console.log(stdout.toString());
-  if (stderr.stderr) console.log(stderr.toString());
-  if (status !== 0) throw error || 'Non-zero exit code';
+  const {stdout, stderr, error} = spawnSync('npm', args, {cwd: url});
+  if (stdout.length) console.debug(stdout.toString());
+  if (stderr.stderr) console.error(stderr.toString());
+  if (error) console.error(error);
 });
