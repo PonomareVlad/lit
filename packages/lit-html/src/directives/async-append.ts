@@ -18,7 +18,7 @@ import {
   setChildPartValue,
 } from '../directive-helpers.js';
 
-class AsyncAppendDirective extends AsyncReplaceDirective {
+export class AsyncAppendDirective extends AsyncReplaceDirective {
   private __childPart!: ChildPart;
 
   // Override AsyncReplace to narrow the allowed part type to ChildPart only
@@ -72,4 +72,4 @@ export const asyncAppend = directive(AsyncAppendDirective);
  * The type of the class that powers this directive. Necessary for naming the
  * directive's return type.
  */
-export type {AsyncAppendDirective};
+// export type {AsyncAppendDirective};

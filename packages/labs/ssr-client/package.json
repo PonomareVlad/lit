@@ -53,6 +53,11 @@
       "development": "./development/directives/server-until.js",
       "default": "./directives/server-until.js"
     },
+    "./directives/server-async-append.js": {
+      "types": "./development/directives/server-async-append.d.ts",
+      "development": "./development/directives/server-async-append.js",
+      "default": "./directives/server-async-append.js"
+    },
     "./controllers/server-controller.js": {
       "types": "./development/controllers/server-controller.d.ts",
       "development": "./development/controllers/server-controller.js",

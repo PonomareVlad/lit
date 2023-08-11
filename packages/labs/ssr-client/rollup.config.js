@@ -14,6 +14,7 @@ export default litProdConfig({
     'lit-element-hydrate-support',
     'directives/render-light',
     'directives/server-until',
+    'directives/server-async-append',
     'controllers/server-controller',
   ],
   external: ['lit/directive.js', 'lit/directive-helpers.js'],
