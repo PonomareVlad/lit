@@ -54,6 +54,7 @@
   "files": [
     "/development/",
     "!/development/test/",
+    "/controllers/",
     "/directives/",
     "/lib/",
     "/node/",

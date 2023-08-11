@@ -282,6 +282,7 @@ packages/labs/ssr/index.*
 !packages/labs/ssr/custom_typings/*.d.ts
 
 packages/labs/ssr-client/development/
+packages/labs/ssr-client/controllers/
 packages/labs/ssr-client/directives/
 packages/labs/ssr-client/lib/
 packages/labs/ssr-client/node/
