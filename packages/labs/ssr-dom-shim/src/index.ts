@@ -31,8 +31,8 @@ const attributesForElement = (
 export class EventTargetWithParent extends (globalThis.EventTarget ?? Object) {
   __eventTargetParent: EventTarget | undefined;
 
-  override dispatchEvent(event: EventWithPath): boolean {
-    event.__path.push(this);
+  override dispatchEvent(event: EventWithPath | Event): boolean {
+    if (event instanceof EventWithPath) event.__path.push(this);
 
     // TODO (justinfagnani): This doesn't implement capture at all.
     // To implement capture we'd need to patch addEventListener to track the
@@ -70,7 +70,7 @@ export class EventWithPath extends (globalThis.Event ?? Object) {
   }
 }
 
-const EventShim = class Event extends EventWithPath {}
+const EventShim = class Event extends EventWithPath {};
 const EventShimWithRealType = EventShim as object as typeof Event;
 export {EventShimWithRealType as Event};
 
