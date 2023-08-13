@@ -149,6 +149,7 @@
   "author": "Google LLC",
   "dependencies": {
     "@lit/reactive-element": "^1.5.0",
+    "@lit-labs/ssr-dom-shim": "^1.0.0",
     "lit": "^2.7.0"
   },
   "devDependencies": {

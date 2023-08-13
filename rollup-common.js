@@ -280,6 +280,13 @@ const injectNodeDomShimIntoReactiveElement = [
       '**/packages/labs/ssr-client/development/lib/hydrate-lit-html.js',
     ],
   }),
+  inject({
+    Event: ['@lit-labs/ssr-dom-shim', 'Event'],
+    include: [
+      '**/packages/labs/context/development/lib/context-request-event.js',
+      '**/packages/labs/context/development/lib/controllers/context-provider.js',
+    ],
+  }),
   replace({
     preventAssignment: true,
     values: {
