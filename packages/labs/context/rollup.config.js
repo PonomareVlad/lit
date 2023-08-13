@@ -9,6 +9,7 @@ import {createRequire} from 'module';
 
 export default litProdConfig({
   packageName: createRequire(import.meta.url)('./package.json').name,
+  includeNodeBuild: true,
   entryPoints: ['index'],
   external: [
     '@lit/reactive-element',

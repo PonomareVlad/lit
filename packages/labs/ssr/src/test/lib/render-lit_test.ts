@@ -505,6 +505,13 @@ for (const global of [emptyVmGlobal, shimmedVmGlobal]) {
   });
 
   test('calls customElementRendered', () => {});
+
+  test('dispatchEvent', async () => {
+    const {render, eventDispatch} = await setup();
+    const result = await render(eventDispatch);
+
+    assert.match(result, '<p><!--lit-part-->set<!--/lit-part--></p>');
+  });
 }
 
 test.run();
