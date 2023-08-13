@@ -14,6 +14,7 @@ export default litProdConfig({
   external: [
     '@lit/reactive-element',
     '@lit/reactive-element/decorators/base.js',
+    '@lit-labs/ssr-dom-shim',
     'lit',
     'lit/directive.js',
   ],
