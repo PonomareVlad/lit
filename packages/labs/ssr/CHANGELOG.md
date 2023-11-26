@@ -1,5 +1,73 @@
 # Change Log
 
+## 3.2.0
+
+### Minor Changes
+
+- [#4382](https://github.com/lit/lit/pull/4382) [`011b762d`](https://github.com/lit/lit/commit/011b762d68c1f90eff2028cc345cb8cb818a64cb) - Add a server-only html function, to define templates that will only be rendered on the server.
+
+### Patch Changes
+
+- [#4389](https://github.com/lit/lit/pull/4389) [`ef2976b9`](https://github.com/lit/lit/commit/ef2976b9e6b737f54f61e3ebf7af42ff921f00cb) - Fix a race condition in `RenderResultReadable` which could skip async work.
+
+- Updated dependencies [[`bf551b5b`](https://github.com/lit/lit/commit/bf551b5bdc816c1b0117ab436c50390ae3f5686d), [`949a5467`](https://github.com/lit/lit/commit/949a54677748a1f83ec4d166bd40e244de3afda7), [`c7922a0c`](https://github.com/lit/lit/commit/c7922a0cb90075a9e4c72f93078e411a303c54d1), [`839ca0f8`](https://github.com/lit/lit/commit/839ca0f81a451fbaae97d958aafcaf4c52df9b65)]:
+  - lit@3.1.0
+  - lit-html@3.1.0
+
+## 3.1.9
+
+### Patch Changes
+
+- [#4311](https://github.com/lit/lit/pull/4311) [`cabe72a8`](https://github.com/lit/lit/commit/cabe72a863a5de14a4bbca384374db748dd9b4c5) - Update version range for `lit` dependency to include v2. This allows projects still on lit v2 to use this package without being forced to install lit v3.
+
+- [#4314](https://github.com/lit/lit/pull/4314) [`f9c3659f`](https://github.com/lit/lit/commit/f9c3659f28ba2fc0bc6325ba569c2107ee0afb19) - Fix ModuleLoader so it can load modules concurrently.
+
+- [#4298](https://github.com/lit/lit/pull/4298) [`c05767c2`](https://github.com/lit/lit/commit/c05767c2df70623cc379f1b0c86fcd0660f89e75) - Fix svg templates getting surrounded by empty `<svg></svg>` tags when rendered.
+
+## 3.1.8
+
+### Patch Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+- [#4202](https://github.com/lit/lit/pull/4202) [`77e9b48e`](https://github.com/lit/lit/commit/77e9b48e4aefc61d5fe31939019c281d7303137c) - Fix an obscure potential memory leak, only keeping weak references to directive classes.
+
+- Updated dependencies:
+  - @lit/reactive-element@2.0.0
+  - lit-html@3.0.0
+  - lit@3.0.0
+  - lit-element@4.0.0
+
+## 3.1.8-pre.0
+
+### Patch Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+- [#4202](https://github.com/lit/lit/pull/4202) [`77e9b48e`](https://github.com/lit/lit/commit/77e9b48e4aefc61d5fe31939019c281d7303137c) - Fix an obscure potential memory leak, only keeping weak references to directive classes.
+
+- Updated dependencies [[`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5), [`0f6878dc`](https://github.com/lit/lit/commit/0f6878dc45fd95bbeb8750f277349c1392e2b3ad), [`2a01471a`](https://github.com/lit/lit/commit/2a01471a5f65fe34bad11e1099281811b8d0f79b), [`2eba6997`](https://github.com/lit/lit/commit/2eba69974c9e130e7483f44f9daca308345497d5), [`d27a77ec`](https://github.com/lit/lit/commit/d27a77ec3d3999e872df9218a2b07f90f22eb417), [`6470807f`](https://github.com/lit/lit/commit/6470807f3a0981f9d418cb26f05969912455d148), [`09949234`](https://github.com/lit/lit/commit/09949234445388d51bfb4ee24ff28a4c9f82fe17)]:
+  - @lit/reactive-element@2.0.0-pre.1
+  - lit-element@4.0.0-pre.1
+  - lit-html@3.0.0-pre.1
+  - lit@3.0.0-pre.1
+
+## 3.1.7
+
+### Patch Changes
+
+- [#4196](https://github.com/lit/lit/pull/4196) [`fb9147b0`](https://github.com/lit/lit/commit/fb9147b032d79997fc09f64cf364257bff73e940) Thanks [@robak86](https://github.com/robak86)! - Fix SSR returning a truncated response
+
+## 3.1.6
+
+### Patch Changes
+
+- [#4188](https://github.com/lit/lit/pull/4188) [`4b1dc1b6`](https://github.com/lit/lit/commit/4b1dc1b66738ea976d30430532d4a963a78994cc) Thanks [@jimsimon](https://github.com/jimsimon)! - Improve "partIndex" error message to include the offending template, details about common causes, and a link to the docs.
+
+- [#4175](https://github.com/lit/lit/pull/4175) [`84bb0523`](https://github.com/lit/lit/commit/84bb052335605581c88a2071d00b6c2598952122) Thanks [@43081j](https://github.com/43081j)! - Update parse5/tools to simplify importing of node types from the default tree adapter
+
+- [#4168](https://github.com/lit/lit/pull/4168) [`444599eb`](https://github.com/lit/lit/commit/444599eb46d2fa0fa1b348921dfda317d860a327) Thanks [@43081j](https://github.com/43081j)! - Upgrade parse5 to 7.x in localize-tools and import from root of parse5 where possible
+
 ## 3.1.5
 
 ### Patch Changes
@@ -11,6 +79,20 @@
 ### Patch Changes
 
 - [#3942](https://github.com/lit/lit/pull/3942) [`ed42d5f0`](https://github.com/lit/lit/commit/ed42d5f07fc8eed344deaa2cd7b9a88ecdd68d54) - Fix adding node marker for hydration for nested custom elements without attributes. This ensures nested custom elements have their `defer-hydration` attribute removed when parent is hydrated even without any attributes or bindings.
+
+## 3.1.3-pre.0
+
+### Patch Changes
+
+- [#3814](https://github.com/lit/lit/pull/3814) [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa) - Update to TypeScript v5.0
+
+- Updated dependencies [[`be72f66b`](https://github.com/lit/lit/commit/be72f66bd9aab5d0586729fb5be4bac4aa27cb7f), [`dfd747cf`](https://github.com/lit/lit/commit/dfd747cf4f7239e0c3bb7134f8acb967d0157654), [`23c404fd`](https://github.com/lit/lit/commit/23c404fdec0cd7be834221b6ddf9b659c24ca8a2), [`76795a18`](https://github.com/lit/lit/commit/76795a18263bb5e762e9fc909c97d1fdacee5b1f), [`1db01376`](https://github.com/lit/lit/commit/1db0137699b35d7e7bfac9b2ab274af4100fd7cf), [`6f2833fd`](https://github.com/lit/lit/commit/6f2833fd05f2ecde5386f72d291dafc9dbae0cf7), [`c3e473b4`](https://github.com/lit/lit/commit/c3e473b499ff029b5e1aff01ca8799daf1ca1bbe), [`92cedaa2`](https://github.com/lit/lit/commit/92cedaa2c8cd8a306be3fe25d52e0e47bb044020), [`7e8491d4`](https://github.com/lit/lit/commit/7e8491d4ed9f0c39d974616c4678552ef50b81df), [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa), [`f06f7972`](https://github.com/lit/lit/commit/f06f7972a027d2937fe2c68ab5af0274dec57cf4), [`76795a18`](https://github.com/lit/lit/commit/76795a18263bb5e762e9fc909c97d1fdacee5b1f)]:
+  - @lit/reactive-element@2.0.0-pre.0
+  - lit-html@3.0.0-pre.0
+  - lit@3.0.0-pre.0
+  - lit-element@4.0.0-pre.0
+  - @lit-labs/ssr-dom-shim@1.1.2-pre.0
+  - @lit-labs/ssr-client@1.1.2-pre.0
 
 ## 3.1.3
 

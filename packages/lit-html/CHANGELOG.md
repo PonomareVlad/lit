@@ -1,5 +1,75 @@
 # Change Log
 
+## 3.1.0
+
+### Minor Changes
+
+- [#4309](https://github.com/lit/lit/pull/4309) [`949a5467`](https://github.com/lit/lit/commit/949a54677748a1f83ec4d166bd40e244de3afda7) - Adds two new types: UncompiledTemplateResult and MaybeCompiledTemplateResult. Currently UncompiledTemplateResult is the same as TemplateResult, and MaybeCompiledTemplateResult is the union of the compiled and uncompiled types.
+
+## 3.0.2
+
+### Patch Changes
+
+- [#4345](https://github.com/lit/lit/pull/4345) [`02b8d620`](https://github.com/lit/lit/commit/02b8d62003a16075ce3873ac3e40db43c0254ecf) - Add a dev mode warning if a static value such as `literal` or `unsafeStatic` is detected within the non-static `html` tag function. These should only be used with the static `html` tag function imported from `lit-html/static.js` or `lit/static-html.js`.
+
+## 3.0.1
+
+### Patch Changes
+
+- [#4240](https://github.com/lit/lit/pull/4240) [`edf998c9`](https://github.com/lit/lit/commit/edf998c9fe34183888ffc781dd330dc8a962dd7a) Thanks [@remziatay](https://github.com/remziatay)! - Improved the type inferece of the `choose()` directive to properly restrict the case type inferred from provided value. **Note**: If this change creates a type error in your code, there must have been an unreachable case that can be removed, or the type of your `value` might be missing a valid case in the union.
+
+- [#4310](https://github.com/lit/lit/pull/4310) [`8f674ab3`](https://github.com/lit/lit/commit/8f674ab319e4eadbf5b028f1c0bd15d276c02d0e) Thanks [@megheaiulian](https://github.com/megheaiulian)! - The `when()` directive now calls the case functions with the provided condition value as an argument. This allows the narrowing of types for the condition value based on its truthiness when used as a parameter for the case function.
+
+## 3.0.0
+
+### Major Changes
+
+- [#3756](https://github.com/lit/lit/pull/3756) [`f06f7972`](https://github.com/lit/lit/commit/f06f7972a027d2937fe2c68ab5af0274dec57cf4) - Drop IE11 support
+
+- [#3759](https://github.com/lit/lit/pull/3759) [`1db01376`](https://github.com/lit/lit/commit/1db0137699b35d7e7bfac9b2ab274af4100fd7cf) - Use replaceWith() for SVG templates
+
+- [#3765](https://github.com/lit/lit/pull/3765) [`92cedaa2`](https://github.com/lit/lit/commit/92cedaa2c8cd8a306be3fe25d52e0e47bb044020) - Remove experimental hydrate modules. These are available from `@lit-labs/ssr-client`.
+
+- [#3751](https://github.com/lit/lit/pull/3751) [`dfd747cf`](https://github.com/lit/lit/commit/dfd747cf4f7239e0c3bb7134f8acb967d0157654) - Simplify lit-html attribute handling for standards-compliant browsers that iterate attributes in source order
+
+- [#3750](https://github.com/lit/lit/pull/3750) [`c3e473b4`](https://github.com/lit/lit/commit/c3e473b499ff029b5e1aff01ca8799daf1ca1bbe) - Use toggleAttribute() to simplify boolean attribute parts
+
+### Patch Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+- [#3762](https://github.com/lit/lit/pull/3762) [`23c404fd`](https://github.com/lit/lit/commit/23c404fdec0cd7be834221b6ddf9b659c24ca8a2) - Remove Lit 1 -> Lit 2 migration warnings
+
+## 3.0.0-pre.1
+
+### Minor Changes
+
+- [#4081](https://github.com/lit/lit/pull/4081) [`d27a77ec`](https://github.com/lit/lit/commit/d27a77ec3d3999e872df9218a2b07f90f22eb417) - Sync from last stable release
+
+### Patch Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+## 3.0.0-pre.0
+
+### Major Changes
+
+- [#3751](https://github.com/lit/lit/pull/3751) [`dfd747cf`](https://github.com/lit/lit/commit/dfd747cf4f7239e0c3bb7134f8acb967d0157654) - Simplify lit-html attribute handling for standards-compliant browsers that iterate attributes in source order
+
+- [#3759](https://github.com/lit/lit/pull/3759) [`1db01376`](https://github.com/lit/lit/commit/1db0137699b35d7e7bfac9b2ab274af4100fd7cf) - Use replaceWith() for SVG templates
+
+- [#3750](https://github.com/lit/lit/pull/3750) [`c3e473b4`](https://github.com/lit/lit/commit/c3e473b499ff029b5e1aff01ca8799daf1ca1bbe) - Use toggleAttribute() to simplify boolean attribute parts
+
+- [#3765](https://github.com/lit/lit/pull/3765) [`92cedaa2`](https://github.com/lit/lit/commit/92cedaa2c8cd8a306be3fe25d52e0e47bb044020) - Remove experimental hydrate modules. These are available from `@lit-labs/ssr-client`.
+
+- [#3756](https://github.com/lit/lit/pull/3756) [`f06f7972`](https://github.com/lit/lit/commit/f06f7972a027d2937fe2c68ab5af0274dec57cf4) - Drop IE11 support
+
+### Patch Changes
+
+- [#3762](https://github.com/lit/lit/pull/3762) [`23c404fd`](https://github.com/lit/lit/commit/23c404fdec0cd7be834221b6ddf9b659c24ca8a2) - Remove Lit 1 -> Lit 2 migration warnings
+
+- [#3814](https://github.com/lit/lit/pull/3814) [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa) - Update to TypeScript v5.0
+
 ## 2.8.0
 
 ### Minor Changes

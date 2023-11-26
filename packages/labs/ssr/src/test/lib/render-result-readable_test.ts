@@ -40,6 +40,51 @@ test('RenderResultReadable collects strings and nested Promises of iterables', a
   assert.equal(s, 'abcd');
 });
 
+test('RenderResultReadable collects all iterables when stream is back pressured', async () => {
+  class TestRenderResultReadable extends RenderResultReadable {
+    override push(value: any) {
+      super.push(value);
+
+      // for the value different from "__" we return true to indicate that we can accept more data
+      return value !== '__';
+    }
+  }
+
+  const readable = new TestRenderResultReadable([
+    'a',
+    Promise.resolve([Promise.resolve(['__', 'b'])]),
+    '__',
+    'c',
+  ]);
+
+  const s = await collectReadable(readable);
+  assert.equal(s, 'a__b__c');
+});
+
+test('RenderResultReadable yields for some time until promises resolve', async () => {
+  const readable = new RenderResultReadable([
+    'a',
+    new Promise((res) => setTimeout(res, 50)).then((_) => ['b', 'c']),
+    new Promise((res) => setTimeout(res, 50)).then((_) => ['d', 'e']),
+    'f',
+  ]);
+  const s = await collectReadable(readable);
+  assert.equal(s, 'abcdef');
+});
+
+test('pulling synchronously from RenderResultReadable cannot skip async work', async () => {
+  const readable = new RenderResultReadable([
+    'a',
+    new Promise((res) => setTimeout(res, 50)).then((_) => ['b']),
+    'c',
+  ]);
+  readable.setEncoding('utf8');
+  assert.equal(readable.read(), 'a');
+  // Regression test where it was possible to skip Promises by calling `.read`
+  // while a promise was still resolving.
+  assert.equal(readable.read(), null);
+});
+
 test.run();
 
 const collectReadable = async (r: Readable) => {

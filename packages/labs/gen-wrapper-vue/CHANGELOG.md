@@ -1,5 +1,44 @@
 # @lit-labs/gen-wrapper-vue
 
+## 0.3.1
+
+### Patch Changes
+
+- [#4306](https://github.com/lit/lit/pull/4306) [`c28ebba1`](https://github.com/lit/lit/commit/c28ebba15669042144db48563611b2c9bb7a2e47) - Update dependency version to refer to stable versions, rather than pre-release versions of our own packages.
+
+- Updated dependencies [[`2896209b`](https://github.com/lit/lit/commit/2896209b925169793898b10dc3409de4056c93f7), [`7a9804ad`](https://github.com/lit/lit/commit/7a9804adc676eb2e84252d31d600e59032b0482a)]:
+  - @lit-labs/analyzer@0.11.0
+
+## 0.3.0
+
+### Minor Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+### Patch Changes
+
+- Updated dependencies:
+  - @lit-labs/gen-utils@0.3.0
+  - @lit-labs/analyzer@0.10.0
+
+## 0.3.0-pre.0
+
+### Minor Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+### Patch Changes
+
+- Updated dependencies [[`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5)]:
+  - @lit-labs/gen-utils@0.3.0-pre.0
+  - @lit-labs/analyzer@0.10.0-pre.0
+
+## 0.2.7
+
+### Patch Changes
+
+- [#4052](https://github.com/lit/lit/pull/4052) [`94665515`](https://github.com/lit/lit/commit/946655151e4ae0cf873c8710436c2544fca9743b) Thanks [@zh-lx](https://github.com/zh-lx)! - Add support for packages containing elements in sub directories and fixes module import paths in generated output to have forward slash separators even when run in Windows.
+
 ## 0.2.6
 
 ### Patch Changes
@@ -13,6 +52,17 @@
 
 - Updated dependencies [[`d8e80656`](https://github.com/lit/lit/commit/d8e806561e2d5c12bc99fcee34bce1825c3ca1ae)]:
   - @lit-labs/analyzer@0.8.0
+
+## 0.2.4-pre.0
+
+### Patch Changes
+
+- [#3814](https://github.com/lit/lit/pull/3814) [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa) - Update to TypeScript v5.0
+
+- Updated dependencies [[`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa)]:
+  - @lit-labs/gen-utils@0.2.2-pre.0
+  - @lit-labs/vue-utils@0.1.1-pre.0
+  - @lit-labs/analyzer@0.6.1-pre.0
 
 ## 0.2.4
 

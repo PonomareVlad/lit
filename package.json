@@ -10,7 +10,8 @@
     "packages/*",
     "packages/labs/*",
     "packages/labs/test-projects/*",
-    "packages/localize/examples/*"
+    "packages/localize/examples/*",
+    "examples/*"
   ],
   "scripts": {
     "benchmarks": "cd packages/benchmarks && npm run benchmarks",
@@ -23,8 +24,8 @@
     "format:check": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --check",
     "format:fix": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --write",
     "ignore-sync": "ignore-sync .",
-    "lint": "npm run lint:check",
-    "lint:check": "eslint --ignore-pattern=examples/ \"**/*.{js,ts}\"",
+    "lint": "wireit",
+    "lint:check": "wireit",
     "lint:fix": "eslint --ignore-pattern=examples/ --fix \"**/*.{js,ts}\"",
     "test": "npm run test:not-starter-kits && npm run test:lit-starter-js && npm run test:lit-starter-ts",
     "test:not-starter-kits": "wireit",
@@ -35,7 +36,8 @@
     "changeset": "changeset",
     "version": "npm run changeset version && npm run update-version-vars",
     "update-version-vars": "node scripts/update-version-variables.js",
-    "release": "npm run build && npm run changeset publish"
+    "release": "npm run build && npm run changeset publish",
+    "benchmark:size": "wireit"
   },
   "wireit": {
     "build": {
@@ -50,6 +52,9 @@
         "./packages/localize:build",
         "./packages/localize-tools:build",
         "./packages/reactive-element:build",
+        "./packages/context:build",
+        "./packages/react:build",
+        "./packages/task:build",
         "./packages/tests:build",
         "./packages/ts-transformers:build",
         "./packages/labs/analyzer:build",
@@ -64,7 +69,9 @@
         "./packages/labs/motion:build",
         "./packages/labs/nextjs:build",
         "./packages/labs/observers:build",
+        "./packages/labs/preact-signals:build",
         "./packages/labs/react:build",
+        "./packages/labs/rollup-plugin-minify-html-literals:build",
         "./packages/labs/router:build",
         "./packages/labs/scoped-registry-mixin:build",
         "./packages/labs/ssr:build",
@@ -79,7 +86,8 @@
         "./packages/localize/examples/runtime-js:build",
         "./packages/localize/examples/runtime-ts:build",
         "./packages/localize/examples/transform-js:build",
-        "./packages/localize/examples/transform-ts:build"
+        "./packages/localize/examples/transform-ts:build",
+        "./packages/labs/test-projects/test-elements-react:build"
       ]
     },
     "build:ts": {
@@ -98,7 +106,9 @@
         "./packages/labs/motion:build:ts",
         "./packages/labs/nextjs:build:ts",
         "./packages/labs/observers:build:ts",
+        "./packages/labs/preact-signals:build:ts",
         "./packages/labs/react:build:ts",
+        "./packages/labs/rollup-plugin-minify-html-literals:build:ts",
         "./packages/labs/router:build:ts",
         "./packages/labs/scoped-registry-mixin:build:ts",
         "./packages/labs/ssr:build:ts",
@@ -134,26 +144,38 @@
       "#comment": [
         "We run the starter kit tests separately because when running in our",
         "CI they require a longer browserStartTimeout, but we don't want to",
-        "change that default because it's a user template."
+        "change that default because it's a user template.",
+        "Also, note that context, motion, observers, router, ",
+        "scoped-registry-mixin, task, lit-element, lit-html, and ",
+        "reactive-element are all tested as part of ./packages/tests.",
+        "See ./packages/tests/src/web-test-runner.config.ts"
       ],
       "dependencies": [
         "./packages/localize:test",
         "./packages/localize-tools:test",
+        "./packages/react:test",
         "./packages/tests:test",
         "./packages/ts-transformers:test",
         "./packages/labs/analyzer:test",
         "./packages/labs/cli:test",
+        "./packages/labs/cli-localize:test",
         "./packages/labs/compiler:test",
         "./packages/labs/eleventy-plugin-lit:test",
+        "./packages/labs/eslint-plugin:test",
+        "./packages/labs/gen-manifest:test",
         "./packages/labs/gen-utils:test",
         "./packages/labs/gen-wrapper-angular:test",
         "./packages/labs/gen-wrapper-react:test",
         "./packages/labs/gen-wrapper-vue:test",
+        "./packages/labs/nextjs:test",
+        "./packages/labs/preact-signals:test",
         "./packages/labs/react:test",
+        "./packages/labs/rollup-plugin-minify-html-literals:test",
         "./packages/labs/ssr:test",
         "./packages/labs/ssr-react:test",
         "./packages/labs/testing:test",
-        "./packages/labs/virtualizer:test"
+        "./packages/labs/virtualizer:test",
+        "./examples/preact:test"
       ]
     },
     "test:lit-starter-js": {
@@ -187,13 +209,47 @@
         "./packages/labs/gen-wrapper-vue:test",
         "./packages/labs/testing:test"
       ]
+    },
+    "benchmark:size": {
+      "dependencies": [
+        "./packages/lit:build:rollup",
+        "./packages/lit-html:build:rollup"
+      ],
+      "files": [
+        "scripts/check-size.js"
+      ],
+      "output": [
+        "scripts/check-size-out.md"
+      ],
+      "command": "node scripts/check-size.js"
+    },
+    "lint": {
+      "dependencies": [
+        "lint:check"
+      ]
+    },
+    "lint:check": {
+      "files": [
+        "**/*.{js,ts}",
+        ".eslintignore",
+        ".eslintrc.json",
+        "!**/examples/**/*.{js,ts}",
+        "!node_modules/"
+      ],
+      "output": [],
+      "command": "eslint --ignore-pattern=examples/ \"**/*.{js,ts}\""
+    },
+    "rollup-config": {
+      "files": [
+        "rollup-common.js"
+      ]
     }
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
     "@changesets/cli": "^2.24.4",
     "@changesets/get-github-info": "^0.5.0",
-    "@esm-bundle/chai": "^4.3.4",
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-inject": "^5.0.2",
     "@rollup/plugin-node-resolve": "^13.2.1",
@@ -202,8 +258,8 @@
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.44",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
     "@web/dev-server": "^0.1.32",
     "@web/dev-server-legacy": "^1.0.0",
     "@web/test-runner": "^0.15.0",
@@ -211,9 +267,9 @@
     "@web/test-runner-playwright": "^0.9.0",
     "@web/test-runner-saucelabs": "^0.8.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.13.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-no-only-tests": "^2.4.0",
+    "eslint": "^8.47.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-no-only-tests": "^3.1.0",
     "husky": "^8.0.1",
     "ignore-sync": "^5.0.1",
     "lint-staged": "^13.0.3",
@@ -224,9 +280,9 @@
     "rollup-plugin-sourcemaps": "^0.6.2",
     "rollup-plugin-summary": "^1.4.3",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "~4.7.4",
+    "typescript": "~5.2.0",
     "uvu": "^0.5.6",
-    "wireit": "^0.9.5"
+    "wireit": "^0.14.0"
   },
   "lint-staged": {
     "**/*.{cjs,html,js,json,md,ts}": "prettier --write",
