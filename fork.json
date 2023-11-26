@@ -6,9 +6,9 @@
     "@ponomarevlad/reactive-element": "packages/reactive-element",
     "@ponomarevlad/lit-labs-ssr-dom-shim": "packages/labs/ssr-dom-shim",
     "@ponomarevlad/lit-labs-ssr-client": "packages/labs/ssr-client",
-    "@ponomarevlad/lit-labs-context": "packages/labs/context",
+    "@ponomarevlad/lit-context": "packages/context",
     "@ponomarevlad/lit-labs-router": "packages/labs/router",
-    "@ponomarevlad/lit-labs-task": "packages/labs/task",
+    "@ponomarevlad/lit-task": "packages/task",
     "@ponomarevlad/lit-labs-ssr": "packages/labs/ssr"
   }
 }
