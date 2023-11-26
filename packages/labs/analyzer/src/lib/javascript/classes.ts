@@ -72,6 +72,28 @@ export const getClassDeclaration = (
   });
 };
 
+const getIsReadonlyForNode = (
+  node: ts.Node,
+  analyzer: AnalyzerInterface
+): boolean => {
+  const {typescript} = analyzer;
+  if (typescript.isPropertyDeclaration(node)) {
+    return (
+      node.modifiers?.some((mod) =>
+        typescript.isReadonlyKeywordOrPlusOrMinusToken(mod)
+      ) ||
+      typescript
+        .getJSDocTags(node)
+        .some((tag) => tag.tagName.text === 'readonly')
+    );
+  } else if (typescript.isStatement(node)) {
+    return typescript
+      .getJSDocTags(node)
+      .some((tag) => tag.tagName.text === 'readonly');
+  }
+  return false;
+};
+
 /**
  * Returns the `fields` and `methods` of a class.
  */
@@ -84,26 +106,61 @@ export const getClassMembers = (
   const staticFieldMap = new Map<string, ClassField>();
   const methodMap = new Map<string, ClassMethod>();
   const staticMethodMap = new Map<string, ClassMethod>();
-  declaration.members.forEach((node) => {
+  const accessors = new Map<
+    string,
+    {get?: ts.AccessorDeclaration; set?: ts.AccessorDeclaration}
+  >();
+  declaration.members.forEach((member) => {
     // Ignore non-implementation signatures of overloaded methods by checking
     // for `node.body`.
-    if (typescript.isMethodDeclaration(node) && node.body) {
-      const info = getMemberInfo(typescript, node);
-      const name = node.name.getText();
+    if (typescript.isConstructorDeclaration(member) && member.body) {
+      // TODO(bennypowers): We probably want to see if this matches what TypeScript considers a field initialization.
+      // Maybe instead of iterating through the constructor statements, we walk the body looking for any
+      // assignment expression so that we get ones inside of if statements, in parenthesized expressions, etc.
+      //
+      // Also, this doesn't cover destructuring assignment.
+      //
+      // This is ok for now because these are rare ways to "declare" a field,
+      // especially in web components where you shouldn't have constructor parameters.
+      member.body.statements.forEach((statement) => {
+        if (
+          typescript.isExpressionStatement(statement) &&
+          isConstructorFieldInitializer(statement.expression, typescript)
+        ) {
+          const name = statement.expression.left.name.getText();
+          fieldMap.set(
+            name,
+            new ClassField({
+              name,
+              type: getTypeForNode(statement.expression.right, analyzer),
+              privacy: getPrivacy(typescript, statement),
+              readonly: getIsReadonlyForNode(statement, analyzer),
+              node: statement.expression,
+            })
+          );
+        }
+      });
+    } else if (typescript.isMethodDeclaration(member) && member.body) {
+      const info = getMemberInfo(typescript, member);
+      const name = member.name.getText();
       (info.static ? staticMethodMap : methodMap).set(
         name,
         new ClassMethod({
           ...info,
-          ...getFunctionLikeInfo(node, name, analyzer),
-          ...parseNodeJSDocInfo(node, analyzer),
+          ...getFunctionLikeInfo(member, name, analyzer),
+          ...parseNodeJSDocInfo(member, analyzer),
+          node: member,
         })
       );
-    } else if (typescript.isPropertyDeclaration(node)) {
-      if (!typescript.isIdentifier(node.name)) {
+    } else if (typescript.isPropertyDeclaration(member)) {
+      if (
+        !typescript.isIdentifier(member.name) &&
+        !typescript.isPrivateIdentifier(member.name)
+      ) {
         analyzer.addDiagnostic(
           createDiagnostic({
             typescript,
-            node,
+            node: member,
             message:
               '@lit-labs/analyzer only supports analyzing class properties ' +
               'named with plain identifiers. This property was ignored.',
@@ -114,18 +171,44 @@ export const getClassMembers = (
         return;
       }
 
-      const info = getMemberInfo(typescript, node);
+      const info = getMemberInfo(typescript, member);
+
       (info.static ? staticFieldMap : fieldMap).set(
-        node.name.getText(),
+        member.name.getText(),
         new ClassField({
           ...info,
-          default: node.initializer?.getText(),
-          type: getTypeForNode(node, analyzer),
-          ...parseNodeJSDocInfo(node, analyzer),
+          default: member.initializer?.getText(),
+          type: getTypeForNode(member, analyzer),
+          ...parseNodeJSDocInfo(member, analyzer),
+          readonly: getIsReadonlyForNode(member, analyzer),
+          node: member,
+        })
+      );
+    } else if (typescript.isAccessor(member)) {
+      const name = member.name.getText();
+      const _accessors = accessors.get(name) ?? {};
+      if (typescript.isGetAccessor(member)) _accessors.get = member;
+      else if (typescript.isSetAccessor(member)) _accessors.set = member;
+      accessors.set(name, _accessors);
+    }
+  });
+  for (const [name, {get, set}] of accessors) {
+    if (get ?? set) {
+      fieldMap.set(
+        name,
+        new ClassField({
+          name,
+          type: getTypeForNode((get ?? set)!, analyzer),
+          privacy: getPrivacy(typescript, (get ?? set)!),
+          readonly: !!get && !set,
+          // TODO(bennypowers): derive from getter?
+          // default: ???
+          // TODO(bennypowers): reflect, etc?
+          node: (set ?? get)!,
         })
       );
     }
-  });
+  }
   return {
     fieldMap,
     staticFieldMap,
@@ -255,4 +338,20 @@ export const getSuperClass = (
     })
   );
   return undefined;
+};
+
+export const isConstructorFieldInitializer = (
+  expression: ts.Expression,
+  typescript: typeof ts
+): expression is ConstructorFieldInitializer => {
+  return (
+    typescript.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === typescript.SyntaxKind.EqualsToken &&
+    typescript.isPropertyAccessExpression(expression.left) &&
+    expression.left.expression.kind === typescript.SyntaxKind.ThisKeyword
+  );
+};
+
+type ConstructorFieldInitializer = ts.AssignmentExpression<ts.EqualsToken> & {
+  left: ts.PropertyAccessExpression & {expression: ts.ThisExpression};
 };

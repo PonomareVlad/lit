@@ -1,5 +1,57 @@
 # @lit-labs/analyzer
 
+## 0.11.0
+
+### Minor Changes
+
+- [#4322](https://github.com/lit/lit/pull/4322) [`2896209b`](https://github.com/lit/lit/commit/2896209b925169793898b10dc3409de4056c93f7) - Remove dependencies on Node-specific libaries. This change requries passing a path separator to `absoluteToPackage()`.
+
+- [#4260](https://github.com/lit/lit/pull/4260) [`7a9804ad`](https://github.com/lit/lit/commit/7a9804adc676eb2e84252d31d600e59032b0482a) - Adds TypeScript node reference to analyzer model objects
+
+## 0.10.0
+
+### Minor Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+### Patch Changes
+
+- [#4252](https://github.com/lit/lit/pull/4252) [`c0195cba`](https://github.com/lit/lit/commit/c0195cbac61e51ee89ca141ce90381befe165f14) Thanks [@43081j](https://github.com/43081j)! - Always use consumer's typescript rather than analyzer's dependency to avoid version mismatches
+
+- [#3814](https://github.com/lit/lit/pull/3814) [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa) - Update to TypeScript v5.0
+
+## 0.10.0-pre.0
+
+### Minor Changes
+
+- [#4141](https://github.com/lit/lit/pull/4141) [`6b515e43`](https://github.com/lit/lit/commit/6b515e43c3a24cc8a593247d3aa72d81bcc724d5) - Update TypeScript to ~5.2.0
+
+## 0.9.2
+
+### Patch Changes
+
+- [#4135](https://github.com/lit/lit/pull/4135) [`5ff19a06`](https://github.com/lit/lit/commit/5ff19a06378a2e9aaafd87e9eaeeff6f1850d0ad) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports class accessors (pairs, readonly, or setter-only)
+
+- [#4135](https://github.com/lit/lit/pull/4135) [`5ff19a06`](https://github.com/lit/lit/commit/5ff19a06378a2e9aaafd87e9eaeeff6f1850d0ad) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports non-reactive, constructor assigned class fields
+
+- [#4135](https://github.com/lit/lit/pull/4135) [`5ff19a06`](https://github.com/lit/lit/commit/5ff19a06378a2e9aaafd87e9eaeeff6f1850d0ad) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports jsDoc `@readonly` tag on non-reactive class fields
+
+- [#4135](https://github.com/lit/lit/pull/4135) [`5ff19a06`](https://github.com/lit/lit/commit/5ff19a06378a2e9aaafd87e9eaeeff6f1850d0ad) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports typescript `readonly` keyword on non-reactive class fields
+
+- [#4132](https://github.com/lit/lit/pull/4132) [`b9c34431`](https://github.com/lit/lit/commit/b9c3443185ef2f7bbe728dc61eb4b13b7a0dccb4) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports `@fires {EventType} name`, with type preceding name
+
+- [#4132](https://github.com/lit/lit/pull/4132) [`b9c34431`](https://github.com/lit/lit/commit/b9c3443185ef2f7bbe728dc61eb4b13b7a0dccb4) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports lowercase `@cssprop`, `@cssproperty`, and `@csspart`
+
+- [#4148](https://github.com/lit/lit/pull/4148) [`5d68e64e`](https://github.com/lit/lit/commit/5d68e64ee612d28b713fc8513ea3d6cc10cf92b5) Thanks [@bennypowers](https://github.com/bennypowers)! - Correctly sets `privacy` field for ECMAScript private methods
+
+- [#4132](https://github.com/lit/lit/pull/4132) [`b9c34431`](https://github.com/lit/lit/commit/b9c3443185ef2f7bbe728dc61eb4b13b7a0dccb4) Thanks [@bennypowers](https://github.com/bennypowers)! - Supports `@cssProperty {<color>} --my-color` with syntax metadata
+
+## 0.9.1
+
+### Patch Changes
+
+- [#4065](https://github.com/lit/lit/pull/4065) [`47be5910`](https://github.com/lit/lit/commit/47be5910ebff413e504a6582f476123437982e32) Thanks [@bennypowers](https://github.com/bennypowers)! - Analyzer can now handle module graphs which reexport names from their circular dependencies
+
 ## 0.9.0
 
 ### Minor Changes
@@ -25,6 +77,12 @@
 ### Minor Changes
 
 - [#3812](https://github.com/lit/lit/pull/3812) [`2c59ceb9`](https://github.com/lit/lit/commit/2c59ceb9427ca76a591084258eedab76644f2a63) - Add CSS Custom Property fallback (default) values to manifest
+
+## 0.6.1-pre.0
+
+### Patch Changes
+
+- [#3814](https://github.com/lit/lit/pull/3814) [`23326c6b`](https://github.com/lit/lit/commit/23326c6b9a6abdf01998dadf5d0f20a643e457aa) - Update to TypeScript v5.0
 
 ## 0.6.0
 

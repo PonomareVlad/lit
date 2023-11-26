@@ -11,6 +11,7 @@ import {
   TemplateResult,
   CompiledTemplateResult,
   CompiledTemplate,
+  UncompiledTemplateResult,
 } from 'lit-html';
 import {assert} from '@esm-bundle/chai';
 import {stripExpressionComments} from '@lit-labs/testing';
@@ -37,6 +38,11 @@ const _$lit_template_1: CompiledTemplate = {
   h: branding_tag``,
   parts: [],
 };
+
+/**
+ * Use to check if the file has been compiled with @lit-labs/compiler.
+ */
+const isTestFileNotCompiled = html``['_$litType$'] === 1;
 
 suite('directive-helpers', () => {
   let container: HTMLDivElement;
@@ -67,7 +73,13 @@ suite('directive-helpers', () => {
   test('isTemplateResult', () => {
     assert.isTrue(isTemplateResult(html``));
     assert.isTrue(isTemplateResult(svg``));
-    assert.isTrue(isTemplateResult(html``, TemplateResultType.HTML));
+    if (isTestFileNotCompiled) {
+      assert.isTrue(isTemplateResult(html``, TemplateResultType.HTML));
+    } else {
+      // This template was compiled, so `isTemplateResult` with an explicit
+      // check for `TemplateResultType.HTML` returns false.
+      assert.isFalse(isTemplateResult(html``, TemplateResultType.HTML));
+    }
     assert.isTrue(isTemplateResult(svg``, TemplateResultType.SVG));
 
     assert.isFalse(isTemplateResult(null));
@@ -108,7 +120,8 @@ suite('directive-helpers', () => {
   test('isTemplateResult type only test', () => {
     // This test has no runtime checks, and fails at build time if there are
     // type issues.
-    function acceptTemplateResult(_v: TemplateResult) {}
+    function acceptUncompiledTemplateResult(_v: UncompiledTemplateResult) {}
+
     function acceptTemplateOrCompiledTemplateResult(
       _v: TemplateResult | CompiledTemplateResult
     ) {}
@@ -124,16 +137,16 @@ suite('directive-helpers', () => {
       acceptTemplateOrCompiledTemplateResult(v);
 
       // @ts-expect-error v could be a CompiledTemplateResult
-      acceptTemplateResult(v);
+      acceptUncompiledTemplateResult(v);
     }
     if (isTemplateResult(v, TemplateResultType.HTML)) {
-      acceptTemplateResult(v);
+      acceptUncompiledTemplateResult(v);
       acceptTemplateResultHtml(v);
       // @ts-expect-error v is an html template result
       acceptTemplateResultSvg(v);
     }
     if (isTemplateResult(v, TemplateResultType.SVG)) {
-      acceptTemplateResult(v);
+      acceptUncompiledTemplateResult(v);
       acceptTemplateResultSvg(v);
       // @ts-expect-error v is an svg template result
       acceptTemplateResultHtml(v);
@@ -148,7 +161,9 @@ suite('directive-helpers', () => {
       })
     );
 
-    assert.isFalse(isCompiledTemplateResult(html``));
+    if (isTestFileNotCompiled) {
+      assert.isFalse(isCompiledTemplateResult(html``));
+    }
     assert.isFalse(isCompiledTemplateResult(svg``));
     assert.isFalse(isCompiledTemplateResult(null));
     assert.isFalse(isCompiledTemplateResult(undefined));

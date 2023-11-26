@@ -23,6 +23,16 @@ export class RenderResultReadable extends Readable {
    * completion in any one loop.
    */
   private _iterators: Array<RenderResultIterator>;
+  private _currentIterator?: RenderResultIterator;
+  /**
+   * `_waiting` flag is used to prevent multiple concurrent reads.
+   *
+   * RenderResultReadable handles async RenderResult's, and must await them.
+   * While awaiting a result, it's possible for `_read` to be called again.
+   * Without this flag, a new read is initiated and the order of the data in the
+   * stream becomes inconsistent.
+   */
+  private _waiting = false;
 
   constructor(result: RenderResult) {
     super();
@@ -31,6 +41,9 @@ export class RenderResultReadable extends Readable {
   }
 
   override async _read(_size: number) {
+    if (this._waiting) {
+      return;
+    }
     // This implementation reads values from the RenderResult and pushes them
     // into the base class's Readable implementation. It tries to be as
     // efficient as possible, which means:
@@ -46,24 +59,21 @@ export class RenderResultReadable extends Readable {
     // - _read() should call `this.push()` as many times as it can until
     //   `this.push()` returns false, which means the underlying Readable
     //   does not want any more values.
-    // - `this._read()` should not be called by the underlying Readable until
-    //   after this.push() has returned false, so we can wait on a Promise
-    //   and call _read() when it resolves to continue without a race condition.
-    //   (We try to verify this with the this._waiting field)
     // - `this.push(null)` ends the stream
     //
     // This means that we cannot use for/of loops to iterate on the render
     // result, because we must be able to return in the middle of the loop
     // and resume on the next call to _read().
 
-    // Get the current iterator
-    let iterator = this._iterators.pop();
+    // Get the current iterator, only if we don't already have one from the
+    // previous call to _read()
+    this._currentIterator ??= this._iterators.pop();
 
-    while (iterator !== undefined) {
-      const next = iterator.next();
+    while (this._currentIterator !== undefined) {
+      const next = this._currentIterator.next();
       if (next.done === true) {
         // Restore the outer iterator
-        iterator = this._iterators.pop();
+        this._currentIterator = this._iterators.pop();
         continue;
       }
 
@@ -77,8 +87,12 @@ export class RenderResultReadable extends Readable {
         }
       } else {
         // Must be a Promise
-        this._iterators.push(iterator);
-        iterator = (await value)[Symbol.iterator]() as RenderResultIterator;
+        this._iterators.push(this._currentIterator);
+        this._waiting = true;
+        this._currentIterator = (await value)[
+          Symbol.iterator
+        ]() as RenderResultIterator;
+        this._waiting = false;
       }
     }
     // Pushing `null` ends the stream
