@@ -635,6 +635,18 @@ suite('Task', () => {
     };
   });
 
+  test('task functions can infer type of option param', () => {
+    return class MyElement extends ReactiveElement {
+      task = new Task(
+        this,
+        // Second param should get inferred to `TaskFunctionOptions` with an
+        // `AbortSignal`
+        ([a], {signal}) => (signal.throwIfAborted(), a),
+        () => [1]
+      );
+    };
+  });
+
   test('onComplete callback is called', async () => {
     let numOnCompleteInvocations = 0;
     let lastOnCompleteResult: string | undefined = undefined;
@@ -1049,6 +1061,14 @@ suite('Task', () => {
         complete: () => 123,
         pending: () => 123,
         error: () => 123,
+      })
+    );
+    accept<number>(
+      el.task.render({
+        initial: () => 123,
+        complete: (value) => Number(accept<string>(value)),
+        pending: () => 123,
+        error: (error) => (error instanceof Error ? 123 : 456),
       })
     );
   });

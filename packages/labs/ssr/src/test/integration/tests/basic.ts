@@ -6,7 +6,7 @@
 
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 
-import {html, noChange, nothing, Part} from 'lit';
+import {html, svg, noChange, nothing, Part} from 'lit';
 import {html as staticHtml, literal} from 'lit/static-html.js';
 import {
   directive,
@@ -40,8 +40,9 @@ import {
   RenderLightHost,
 } from '@lit-labs/ssr-client/directives/render-light.js';
 
-import {SSRTest} from './ssr-test.js';
+import {anyHtml, SSRTest, SSRTestDescription} from './ssr-test.js';
 import {AsyncDirective} from 'lit/async-directive.js';
+import {html as serverhtml} from '../../../lib/server-template.js';
 
 interface DivWithProp extends HTMLDivElement {
   prop?: unknown;
@@ -295,6 +296,28 @@ export const tests: {[name: string]: SSRTest} = {
       },
     ],
     stableSelectors: ['div', 'span'],
+  },
+
+  // Regression test for https://github.com/lit/lit/issues/4265
+  // Ensures we do not get extra svg tags around `svg` tagged templates.
+  'ChildPart accepts TemplateResult with SVG type': {
+    render(x: unknown) {
+      return html` <svg>${svg`<circle r="${x}" />`}</svg> `;
+    },
+    expectations: [
+      {
+        args: [11],
+        html: '<svg><circle r="11" /></svg>',
+        check(assert: Chai.Assert, dom: HTMLElement) {
+          // semantic dom diff ignores svg elements, which means we can only
+          // test SVG imperatively.
+          const svgElements = dom.querySelectorAll('svg');
+          // Expect only a single svg element to have been rendered.
+          assert.lengthOf(svgElements, 1);
+        },
+      },
+    ],
+    stableSelectors: ['svg', 'circle'],
   },
 
   'multiple ChildParts, adjacent primitive values': {
@@ -1343,7 +1366,10 @@ export const tests: {[name: string]: SSRTest} = {
               webkitAppearance: 'none',
             },
           ],
-          html: '<div style="--my-prop:green; appearance: none;"></div>',
+          html: anyHtml([
+            '<div style="--my-prop: green; appearance: none;"></div>',
+            '<div style="--my-prop:green; appearance: none;"></div>',
+          ]),
         },
         {
           args: [
@@ -1352,7 +1378,10 @@ export const tests: {[name: string]: SSRTest} = {
               webkitAppearance: 'inherit',
             },
           ],
-          html: '<div style="--my-prop:gray; appearance: inherit;"></div>',
+          html: anyHtml([
+            '<div style="--my-prop: gray; appearance: inherit;"></div>',
+            '<div style="--my-prop:gray; appearance: inherit;"></div>',
+          ]),
         },
       ],
       // styleMap does not dirty check individual properties before setting,
@@ -5483,4 +5512,204 @@ export const tests: {[name: string]: SSRTest} = {
       stableSelectors: ['le-internals-hydrate'],
     };
   },
+  /******************************************************
+   * Server-only template tests
+   ******************************************************/
+  'Server-only template works': {
+    render(x: unknown) {
+      return serverhtml` <div>${x}</div> `;
+    },
+    expectations: [
+      {
+        args: ['foo'],
+        html: '<div>foo</div>',
+      },
+    ],
+    stableSelectors: ['div'],
+    serverOnly: true,
+  },
+  'Server-only template can bind into a rawtext element': {
+    render(x: unknown) {
+      return serverhtml`<head>
+        <title>hello ${x}</title>
+      </head>`;
+    },
+    expectations: [
+      {
+        args: ['foo'],
+        html: '<head><title>hello foo</title></head>',
+      },
+    ],
+    stableSelectors: ['head', 'title'],
+    serverOnly: true,
+  },
+  'Server-only template can render a basic LitElement': {
+    registerElements() {
+      customElements.define(
+        'server-only-basic',
+        class extends LitElement {
+          override render() {
+            return html`<div>[server rendered: <slot></slot>]</div>`;
+          }
+        }
+      );
+    },
+    render(x: string) {
+      return serverhtml`<server-only-basic>${x}</server-only-basic>`;
+    },
+    expectations: [
+      {
+        args: ['foo'],
+        html: {
+          root: `<server-only-basic>foo</server-only-basic>`,
+          'server-only-basic': `<div>[server rendered: <slot></slot>]</div>`,
+        },
+      },
+    ],
+    stableSelectors: ['server-only-basic'],
+    serverOnly: true,
+  },
+  'Server-only template can pass attributes to a LitElement': {
+    registerElements() {
+      class ServerOnlyAttrElement extends LitElement {
+        @property() name: string = 'initial value';
+        override render() {
+          return html`<div>Hello ${this.name}</div>`;
+        }
+      }
+      customElements.define('server-only-attr', ServerOnlyAttrElement);
+    },
+    render(attr: string) {
+      return serverhtml`<server-only-attr name=${attr}></server-only-attr>`;
+    },
+    expectations: [
+      {
+        args: ['attribute from server'],
+        html: {
+          root: `<server-only-attr name="attribute from server"></server-only-attr>`,
+          'server-only-attr': `<div>Hello attribute from server</div>`,
+        },
+      },
+    ],
+    stableSelectors: ['server-only-attr'],
+    serverOnly: true,
+  },
 };
+
+const serverClientHydrationTest: SSRTestDescription = {
+  render(title: string, c1: string, c2: string) {
+    return serverhtml`
+        <!doctype html>
+        <html>
+          <head><title>${title}</title></head>
+          <body>
+            <div id="one">${this.renderFns?.renderOne(c1)}</div>
+            <div id="two">${this.renderFns?.renderTwo(c2)}</div>
+          </body>
+        </html>
+      `;
+  },
+  renderFns: {
+    renderOne(c1: string) {
+      return html`<h1>${c1}</h1>`;
+    },
+    renderTwo(c2: string) {
+      return html`<h2>${c2}</h2>`;
+    },
+  },
+  expectations: [
+    {
+      // Check that the server render is correct.
+      args: ['title', 'c1', 'c2'],
+      html: `
+        <!doctype html>
+        <html>
+          <head><title>title</title></head>
+          <body>
+            <div id="one"><h1>c1</h1></div>
+            <div id="two"><h2>c2</h2></div>
+          </body>
+        </html>
+        `,
+    },
+    {
+      // Hydrate #one with the same data
+      hydrate: true,
+      renderFn: 'renderOne',
+      args: ['c1'],
+      rootSelector: 'div#one',
+      html: `
+        <!doctype html>
+        <html>
+          <head><title>title</title></head>
+          <body>
+            <div id="one"><h1>c1</h1></div>
+            <div id="two"><h2>c2</h2></div>
+          </body>
+        </html>
+        `,
+    },
+    {
+      // Update #one
+      renderFn: 'renderOne',
+      args: ['updated c1'],
+      rootSelector: 'div#one',
+      html: `
+        <!doctype html>
+        <html>
+          <head><title>title</title></head>
+          <body>
+            <div id="one"><h1>updated c1</h1></div>
+            <div id="two"><h2>c2</h2></div>
+          </body>
+        </html>
+        `,
+    },
+    {
+      // Hydrate #two
+      hydrate: true,
+      renderFn: 'renderTwo',
+      args: ['c2'],
+      rootSelector: 'div#two',
+      html: `
+        <!doctype html>
+        <html>
+          <head><title>title</title></head>
+          <body>
+            <div id="one"><h1>updated c1</h1></div>
+            <div id="two"><h2>c2</h2></div>
+          </body>
+        </html>
+        `,
+    },
+    {
+      // Update #two
+      renderFn: 'renderTwo',
+      args: ['updated c2'],
+      rootSelector: 'div#two',
+      html: `
+        <!doctype html>
+        <html>
+          <head><title>title</title></head>
+          <body>
+            <div id="one"><h1>updated c1</h1></div>
+            <div id="two"><h2>updated c2</h2></div>
+          </body>
+        </html>
+        `,
+    },
+  ],
+  stableSelectors: [
+    'html',
+    'head',
+    'title',
+    'body',
+    'div#one',
+    'div#two',
+    'h1',
+    'h2',
+  ],
+  serverOnly: true as const,
+};
+tests['client templates inside server templates can hydrate'] =
+  serverClientHydrationTest;

@@ -46,8 +46,8 @@ type MinOrMax = 'MIN' | 'MAX';
 
 export class MasonryLayout extends GridBaseLayout<MasonryLayoutConfig> {
   private _RANGE_MAP_GRANULARITY = 100;
-  private _positions: Map<number, Positions> = new Map();
-  private _rangeMap: Map<number, RangeMapEntry> = new Map();
+  private _positions = new Map<number, Positions>();
+  private _rangeMap = new Map<number, RangeMapEntry>();
   private _getAspectRatio?: GetAspectRatio;
 
   protected _getDefaultConfig(): MasonryLayoutConfig {
@@ -164,15 +164,17 @@ export class MasonryLayout extends GridBaseLayout<MasonryLayoutConfig> {
         this._scrollPosition + this._viewDim1 + this._overhang
       );
       const maxIdx = this.items.length - 1;
-      const minRange = this._rangeMap.get(this._getRangeMapKey(min, MIN)) ?? [
-        0, 0,
-      ];
-      const maxRange = this._rangeMap.get(this._getRangeMapKey(max, MAX)) ?? [
-        maxIdx,
-        maxIdx,
-      ];
-      this._first = Math.min(minRange[0], maxRange[0]);
-      this._last = Math.max(minRange[1], maxRange[1]);
+      const minKey = this._getRangeMapKey(min, MIN);
+      const maxKey = this._getRangeMapKey(max, MAX);
+      let first = maxIdx;
+      let last = 0;
+      for (let n = minKey; n <= maxKey; n += this._RANGE_MAP_GRANULARITY) {
+        const [rangeFirst, rangeLast] = this._rangeMap.get(n) ?? [maxIdx, 0];
+        first = Math.min(first, rangeFirst);
+        last = Math.max(last, rangeLast);
+      }
+      this._first = first;
+      this._last = last;
     }
   }
 
