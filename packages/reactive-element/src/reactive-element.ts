@@ -1111,7 +1111,7 @@ export abstract class ReactiveElement
   }
 
   serverCallback() {
-    this.__controllers?.forEach((c) => c.hostConnected?.());
+    this._$controllers?.forEach((c) => c.hostConnected?.());
   }
 
   /**
